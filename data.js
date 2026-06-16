@@ -1,5 +1,5 @@
 window.PORTFOLIO_STATE = {
-  "version": "Portfolio Dashboard V1.0 Auto",
+  "version": "Portfolio Dashboard V1.0 Auto Refresh",
   "schemaVersion": 100,
   "asOf": "2026-06-16",
   "previousTotalValueSgd": 82902.01,
@@ -9,7 +9,7 @@ window.PORTFOLIO_STATE = {
   "fireCashflowTargetMonthly": 6000,
   "stage": "Build-up phase",
   "fx": {
-    "USD": 1.2831,
+    "USD": 1.2821,
     "SGD": 1
   },
   "summaryAdjustment": {
@@ -26,11 +26,13 @@ window.PORTFOLIO_STATE = {
       "amountSgd": 1000,
       "quantity": 1630.29,
       "avgCost": 6.791,
-      "currentPrice": 7.9384,
-      "currentValueSgd": 12941.89,
+      "currentPrice": 7.9679,
+      "currentValueSgd": 12989.99,
       "countedInFire": true,
       "account": "SRS",
-      "status": "Locked"
+      "status": "Locked",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "name": "IVV",
@@ -146,9 +148,9 @@ window.PORTFOLIO_STATE = {
   ],
   "quoteEvidence": [
     {
-      "ticker": "AUTO PRICE",
-      "source": "GitHub Actions + Yahoo Finance primary",
-      "detail": "Daily scheduled price refresh uses Yahoo Finance symbols; TradingView/FSMOne kept as manual fallback references."
+      "ticker": "AUTO PRICE REFRESH",
+      "source": "Yahoo Finance primary; TradingView/FSMOne manual fallback references",
+      "detail": "Updated by GitHub Actions at 2026-06-16 22:52 SGT. If a quote is unavailable, last saved price is retained."
     }
   ],
   "notesByDate": {},
@@ -164,13 +166,15 @@ window.PORTFOLIO_STATE = {
       "currency": "SGD",
       "quantity": 300,
       "avgCost": 49,
-      "price": 63.6,
-      "costSgd": 14700,
-      "valueSgd": 19080.0,
-      "pnlSgd": 4380.0,
+      "price": 63.73,
+      "costSgd": 14700.0,
+      "valueSgd": 19119.0,
+      "pnlSgd": 4419.0,
       "completion": 12,
       "notes": "Cash-flow core",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "CICT",
@@ -182,13 +186,15 @@ window.PORTFOLIO_STATE = {
       "currency": "SGD",
       "quantity": 3000,
       "avgCost": 2.18,
-      "price": 2.36,
+      "price": 2.34,
       "costSgd": 6540.0,
-      "valueSgd": 7080.0,
-      "pnlSgd": 540.0,
+      "valueSgd": 7020.0,
+      "pnlSgd": 480.0,
       "completion": 44,
       "notes": "Singapore REIT sleeve",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "YZJ Shipbuilding",
@@ -200,13 +206,15 @@ window.PORTFOLIO_STATE = {
       "currency": "SGD",
       "quantity": 1500,
       "avgCost": 3.41,
-      "price": 3.65,
+      "price": 3.6,
       "costSgd": 5115.0,
-      "valueSgd": 5475.0,
-      "pnlSgd": 360.0,
+      "valueSgd": 5400.0,
+      "pnlSgd": 285.0,
       "completion": 34,
       "notes": "Shipbuilding cycle",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "YZJ Maritime",
@@ -218,14 +226,16 @@ window.PORTFOLIO_STATE = {
       "currency": "SGD",
       "quantity": 6000,
       "avgCost": 0.609,
-      "price": 0.63,
+      "price": 0.625,
       "costSgd": 3654.0,
-      "valueSgd": 3780.0,
-      "pnlSgd": 126.0,
+      "valueSgd": 3750.0,
+      "pnlSgd": 96.0,
       "completion": 18,
       "notes": "Yahoo 8YZ.SI and TradingView SGX:8YZ validated",
       "positionLog": "",
-      "quoteUrl": "https://www.tradingview.com/symbols/SGX-8YZ/"
+      "quoteUrl": "https://www.tradingview.com/symbols/SGX-8YZ/",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "MSFT",
@@ -237,13 +247,15 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 5,
       "avgCost": 395,
-      "price": 399.76,
-      "costSgd": 2534.12,
-      "valueSgd": 2564.66,
-      "pnlSgd": 30.54,
+      "price": 393.394989,
+      "costSgd": 2532.15,
+      "valueSgd": 2521.86,
+      "pnlSgd": -10.29,
       "completion": 10,
       "notes": "AI platform compounder",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "GOOGL",
@@ -255,13 +267,15 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 5,
       "avgCost": 351,
-      "price": 367.11,
-      "costSgd": 2251.84,
-      "valueSgd": 2355.19,
-      "pnlSgd": 103.35,
+      "price": 373.089996,
+      "costSgd": 2250.09,
+      "valueSgd": 2391.69,
+      "pnlSgd": 141.6,
       "completion": 9,
       "notes": "Valuation recovery",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "NVDA",
@@ -273,13 +287,15 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 13,
       "avgCost": 109,
-      "price": 212.45,
-      "costSgd": 1818.15,
-      "valueSgd": 3543.73,
-      "pnlSgd": 1725.58,
+      "price": 209.5,
+      "costSgd": 1816.74,
+      "valueSgd": 3491.8,
+      "pnlSgd": 1675.06,
       "completion": 7,
       "notes": "AI leader",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "PLTR",
@@ -291,13 +307,15 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 4,
       "avgCost": 129,
-      "price": 134.71,
-      "costSgd": 662.08,
-      "valueSgd": 691.39,
-      "pnlSgd": 29.31,
+      "price": 129.970001,
+      "costSgd": 661.56,
+      "valueSgd": 666.54,
+      "pnlSgd": 4.98,
       "completion": 9,
       "notes": "High growth, high volatility",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "MCD",
@@ -309,13 +327,15 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 17,
       "avgCost": 283,
-      "price": 286.12,
-      "costSgd": 6172.99,
-      "valueSgd": 6241.05,
-      "pnlSgd": 68.06,
+      "price": 287.690002,
+      "costSgd": 6168.18,
+      "valueSgd": 6270.4,
+      "pnlSgd": 102.22,
       "completion": 62,
       "notes": "Defensive consumer",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "IVV",
@@ -327,13 +347,15 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 14.345,
       "avgCost": 556.461,
-      "price": 756.35,
-      "costSgd": 10242.26,
-      "valueSgd": 13921.43,
-      "pnlSgd": 3679.17,
+      "price": 754.880005,
+      "costSgd": 10234.28,
+      "valueSgd": 13883.54,
+      "pnlSgd": 3649.26,
       "completion": 12,
       "notes": "Core global equity engine · IVV RSP SGD 1,500/month · USD product · counts toward 300k",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "AMOVA ARK",
@@ -351,7 +373,8 @@ window.PORTFOLIO_STATE = {
       "pnlSgd": -872.9,
       "completion": 0,
       "notes": "Formerly Nikko AM · RSP stopped · loss position",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "fallback: kept previous price"
     },
     {
       "id": "BTC",
@@ -363,13 +386,15 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.0405,
       "avgCost": 99288,
-      "price": 65631,
-      "costSgd": 5159.56,
-      "valueSgd": 3410.55,
-      "pnlSgd": -1749.0,
+      "price": 65642.539062,
+      "costSgd": 5155.53,
+      "valueSgd": 3408.49,
+      "pnlSgd": -1747.04,
       "completion": 10,
       "notes": "Small non-correlated sleeve",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     },
     {
       "id": "ETH",
@@ -381,13 +406,15 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.2568,
       "avgCost": 3652,
-      "price": 1766.4,
-      "costSgd": 1203.33,
-      "valueSgd": 582.03,
-      "pnlSgd": -621.31,
+      "price": 1779.959961,
+      "costSgd": 1202.4,
+      "valueSgd": 586.04,
+      "pnlSgd": -616.36,
       "completion": 8,
       "notes": "Small crypto satellite",
-      "positionLog": ""
+      "positionLog": "",
+      "lastQuoteStatus": "updated",
+      "lastQuoteSource": "Yahoo Finance"
     }
   ],
   "lpx": {
@@ -405,7 +432,7 @@ window.PORTFOLIO_STATE = {
         "currency": "USD",
         "quantity": 5,
         "avgCost": 350,
-        "price": 367.11,
+        "price": 373.089996,
         "completion": 0,
         "notes": "LPX observation account"
       },
@@ -420,7 +447,7 @@ window.PORTFOLIO_STATE = {
         "currency": "USD",
         "quantity": 5,
         "avgCost": 282.18,
-        "price": 286.12,
+        "price": 287.690002,
         "completion": 0,
         "notes": "LPX observation account"
       },
@@ -435,7 +462,7 @@ window.PORTFOLIO_STATE = {
         "currency": "USD",
         "quantity": 5,
         "avgCost": 395,
-        "price": 399.76,
+        "price": 393.394989,
         "completion": 0,
         "notes": "LPX observation account"
       }
@@ -445,6 +472,10 @@ window.PORTFOLIO_STATE = {
     {
       "date": "2026-06-16",
       "text": "Auto-update version prepared: holdings data separated into data.js; GitHub Actions can refresh market prices daily; FIRE target S$300,000."
+    },
+    {
+      "date": "2026-06-16",
+      "text": "Automated price refresh completed via GitHub Actions. Holdings unchanged; prices, market values and P/L refreshed from latest available Yahoo Finance data."
     }
   ],
   "updates": [
