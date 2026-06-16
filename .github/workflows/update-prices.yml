@@ -4,6 +4,8 @@ on:
   schedule:
     # 08:10 Singapore time = 00:10 UTC
     - cron: "10 0 * * *"
+    # 21:10 Singapore time = 13:10 UTC
+    - cron: "10 13 * * *"
   workflow_dispatch:
 
 permissions:
