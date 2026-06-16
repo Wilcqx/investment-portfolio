@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <title>INVESTMENT PORTFOLIO</title>
+    <link rel="stylesheet" href="./styles.css?v=20260616-note-enter-r33" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">PORTFOLIO DASHBOARD V1</p>
+        <h1>FIRE INVESTMENT DESK</h1>
+      </div>
+      <div class="topbar-actions">
+        <button id="privacyToggleBtn" class="icon-button privacy-button" title="Hide summary values" aria-label="Hide summary values">
+          <span class="eye-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="summary-grid" aria-label="Portfolio summary">
+        <article class="metric">
+          <span>TOTAL VALUE</span>
+          <strong id="totalValue">$0</strong>
+        </article>
+        <article class="metric">
+          <span>TOTAL COST</span>
+          <strong id="totalCost">$0</strong>
+        </article>
+        <article class="metric">
+          <span>PROFIT / LOSS</span>
+          <strong id="totalPnl">$0</strong>
+        </article>
+        <article class="metric">
+          <span>DAILY MOVE</span>
+          <strong id="dailyMove">$0</strong>
+        </article>
+        <article class="metric">
+          <span>BUILD PROGRESS</span>
+          <strong id="buildProgress">0%</strong>
+        </article>
+        <article class="metric">
+          <span>MONTHLY RSP</span>
+          <strong id="monthlyRsp">$0</strong>
+        </article>
+      </section>
+
+      <section class="primary-monitors" aria-label="Primary progress monitors">
+        <section class="panel monitor-card hero-monitor">
+          <div class="panel-head compact">
+            <h2>FIRE BUILD</h2>
+            <strong id="fireMeta">Ready</strong>
+          </div>
+          <div class="progress-track" aria-label="FIRE build progress">
+            <span id="progressFill"></span>
+          </div>
+          <p id="progressText">Ready</p>
+        </section>
+
+        <section class="panel monitor-card hero-monitor">
+          <div class="panel-head compact">
+            <h2>CASHFLOW</h2>
+            <strong id="cashflowMeta">Ready</strong>
+          </div>
+          <div class="progress-track cashflow-track" aria-label="Dividend cashflow progress">
+            <span id="cashflowFill"></span>
+          </div>
+          <p id="cashflowText">Ready</p>
+        </section>
+      </section>
+
+      <section class="main-panel">
+        <div class="panel-head">
+          <div>
+            <h2>HOLDINGS</h2>
+            <p id="lastUpdated">Ready</p>
+          </div>
+          <button id="addHoldingBtn" class="text-button">+ Holding</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ASSET</th>
+                <th>MARKET</th>
+                <th>QTY</th>
+                <th>AVG COST</th>
+                <th>PRICE</th>
+                <th>COST</th>
+                <th>VALUE</th>
+                <th>P/L</th>
+                <th>BUILD</th>
+                <th>WEIGHT</th>
+                <th>QUOTE</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="holdingsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="main-panel lpx-panel">
+        <div id="lpxSummary" class="lpx-summary-grid" aria-label="LPX account summary">
+          <article class="metric">
+            <span>TOTAL VALUE</span>
+            <strong id="lpxTotalValue">US$0.00</strong>
+          </article>
+          <article class="metric">
+            <span>TOTAL COST</span>
+            <strong id="lpxTotalCost">US$0.00</strong>
+          </article>
+          <article class="metric">
+            <span>PROFIT / LOSS</span>
+            <strong id="lpxPnl">US$0.00</strong>
+          </article>
+          <article class="metric">
+            <span>DAILY MOVE</span>
+            <strong id="lpxDailyMove">US$0.00</strong>
+          </article>
+          <article class="metric">
+            <span>CASH BALANCE</span>
+            <strong id="lpxCashBalance">US$0.00</strong>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ASSET</th>
+                <th>MARKET</th>
+                <th>QTY</th>
+                <th>AVG COST</th>
+                <th>PRICE</th>
+                <th>COST</th>
+                <th>VALUE</th>
+                <th>P/L</th>
+                <th>BUILD</th>
+                <th>WEIGHT</th>
+                <th>QUOTE</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="lpxHoldingsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <aside class="side-stack">
+        <section class="panel monitor-card cash-balance-card">
+          <div class="panel-head compact">
+            <h2>CASH BALANCE</h2>
+          </div>
+          <ul class="balance-list">
+            <li><span>ACTUAL BALANCE</span><strong id="actualCashBalance">Ready</strong></li>
+            <li><span>SRS CASH BALANCE</span><strong id="srsCashBalance">Ready</strong></li>
+          </ul>
+        </section>
+
+        <section class="panel notes-panel">
+          <div class="panel-head compact">
+            <h2>NOTES</h2>
+          </div>
+          <textarea id="dailyNotes" rows="9" placeholder="update 主仓 2026-06-17: write operation details&#10;update LPX 2026-06-17: write operation details"></textarea>
+          <div class="note-actions">
+            <span id="noteStatus">READY</span>
+            <button id="submitNoteBtn" class="text-button primary" type="button">ENTER</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head compact">
+            <h2>HIGHLIGHTS</h2>
+          </div>
+          <ul id="attentionList" class="detail-list"></ul>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head compact">
+            <h2>ALLOCATION PLAN</h2>
+          </div>
+          <ul id="allocationPlanList" class="detail-list allocation-plan-list"></ul>
+        </section>
+
+      </aside>
+
+      <section class="history-panel">
+        <div class="panel-head">
+          <div>
+            <h2>HISTORY</h2>
+          </div>
+          <button id="toggleHistoryBtn" class="text-button muted" type="button">SHOW ALL</button>
+        </div>
+        <ul id="historyList" class="detail-list timeline"></ul>
+      </section>
+
+    </main>
+
+    <dialog id="holdingDialog">
+      <form id="holdingForm" method="dialog">
+        <div class="dialog-head">
+          <h2 id="dialogTitle">ADD HOLDING</h2>
+          <button id="closeDialogBtn" type="button" class="icon-button small" aria-label="Close" title="Close">X</button>
+        </div>
+        <input type="hidden" id="holdingId" />
+        <label>
+          Name
+          <input id="assetName" required placeholder="Apple" />
+        </label>
+        <label>
+          Ticker
+          <input id="ticker" required placeholder="AAPL" />
+        </label>
+        <label>
+          Quote symbol
+          <input id="quoteSymbol" placeholder="D05.SI / MSFT / BTC-USD" />
+        </label>
+        <label>
+          Category
+          <input id="category" required placeholder="US Tech" />
+        </label>
+        <div class="field-grid">
+          <label>
+            Market
+            <select id="market">
+              <option>US</option>
+              <option>HK</option>
+              <option>SG</option>
+              <option>CN</option>
+              <option>Crypto</option>
+              <option>Fund</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>
+            Currency
+            <select id="currency">
+              <option>USD</option>
+              <option>HKD</option>
+              <option>SGD</option>
+              <option>CNY</option>
+            </select>
+          </label>
+        </div>
+        <div class="field-grid">
+          <label>
+            Quantity
+            <input id="quantity" type="number" min="0" step="0.000001" required />
+          </label>
+          <label>
+            Average cost
+            <input id="avgCost" type="number" min="0" step="0.000001" required />
+          </label>
+        </div>
+        <div class="field-grid">
+          <label>
+            Cost SGD
+            <input id="costSgd" type="number" min="0" step="0.01" required />
+          </label>
+          <label>
+            Value SGD
+            <input id="valueSgd" type="number" min="0" step="0.01" required />
+          </label>
+        </div>
+        <div class="field-grid">
+          <label>
+            Latest price
+            <input id="price" type="number" min="0" step="0.000001" required />
+          </label>
+          <label>
+            Build completion %
+            <input id="completion" type="number" min="0" max="1000" step="0.1" />
+          </label>
+        </div>
+        <label>
+          Notes
+          <input id="assetNotes" placeholder="Thesis, risk, target, next action" />
+        </label>
+        <label>
+          POSITION LOG
+          <textarea id="positionLog" rows="4" placeholder="2026-06-16 BUY 10 @ US$100&#10;2026-06-16 SELL 300 @ S$63.50"></textarea>
+        </label>
+        <div class="dialog-actions">
+          <button id="deleteHoldingBtn" type="button" class="text-button danger">Delete</button>
+          <button id="cancelDialogBtn" type="button" class="text-button muted">Cancel</button>
+          <button id="saveHoldingBtn" class="text-button primary" value="default">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./data.js?v=20260616-auto"></script>
+    <script src="./app.js?v=20260616-auto"></script>
+  </body>
+</html>
