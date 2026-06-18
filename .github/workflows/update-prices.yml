@@ -2,10 +2,12 @@ name: Daily Portfolio Price Refresh
 
 on:
   schedule:
-    # 08:10 Singapore time = 00:10 UTC
-    - cron: "10 0 * * *"
-    # 21:10 Singapore time = 13:10 UTC
-    - cron: "10 13 * * *"
+    # 08:00 Singapore Time = 00:00 UTC
+    - cron: "0 0 * * *"
+
+    # 17:00 Singapore Time = 09:00 UTC
+    - cron: "0 9 * * *"
+
   workflow_dispatch:
 
 permissions:
