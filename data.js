@@ -150,7 +150,7 @@ window.PORTFOLIO_STATE = {
     {
       "ticker": "AUTO PRICE REFRESH",
       "source": "Yahoo Finance primary; TradingView/FSMOne manual fallback references",
-      "detail": "Updated by GitHub Actions at 2026-06-20 18:21 SGT. If a quote is unavailable, last saved price is retained."
+      "detail": "Updated by GitHub Actions at 2026-06-20 23:25 SGT. If a quote is unavailable, last saved price is retained."
     }
   ],
   "notesByDate": {},
@@ -386,10 +386,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.0405,
       "avgCost": 99288,
-      "price": 63580.0,
+      "price": 64147.671875,
       "costSgd": 5188.51,
-      "valueSgd": 3322.51,
-      "pnlSgd": -1866.0,
+      "valueSgd": 3352.17,
+      "pnlSgd": -1836.34,
       "completion": 10,
       "notes": "Small non-correlated sleeve",
       "positionLog": "",
@@ -406,10 +406,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.2568,
       "avgCost": 3652,
-      "price": 1725.800049,
+      "price": 1740.719971,
       "costSgd": 1210.09,
-      "valueSgd": 571.84,
-      "pnlSgd": -638.25,
+      "valueSgd": 576.79,
+      "pnlSgd": -633.3,
       "completion": 8,
       "notes": "Small crypto satellite",
       "positionLog": "",
@@ -495,6 +495,10 @@ window.PORTFOLIO_STATE = {
     },
     {
       "date": "2026-06-19",
+      "text": "Automated price refresh completed via GitHub Actions. Holdings unchanged; prices, market values and P/L refreshed from latest available Yahoo Finance data."
+    },
+    {
+      "date": "2026-06-20",
       "text": "Automated price refresh completed via GitHub Actions. Holdings unchanged; prices, market values and P/L refreshed from latest available Yahoo Finance data."
     },
     {
