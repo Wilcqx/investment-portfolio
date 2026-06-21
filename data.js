@@ -1,7 +1,7 @@
 window.PORTFOLIO_STATE = {
   "version": "Portfolio Dashboard V1.0 Auto Refresh",
   "schemaVersion": 100,
-  "asOf": "2026-06-20",
+  "asOf": "2026-06-21",
   "previousTotalValueSgd": 82902.01,
   "fireTargetSgd": 300000,
   "actualCashSgd": 300000,
@@ -150,7 +150,7 @@ window.PORTFOLIO_STATE = {
     {
       "ticker": "AUTO PRICE REFRESH",
       "source": "Yahoo Finance primary; TradingView/FSMOne manual fallback references",
-      "detail": "Updated by GitHub Actions at 2026-06-20 23:25 SGT. If a quote is unavailable, last saved price is retained."
+      "detail": "Updated by GitHub Actions at 2026-06-21 19:33 SGT. If a quote is unavailable, last saved price is retained."
     }
   ],
   "notesByDate": {},
@@ -386,10 +386,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.0405,
       "avgCost": 99288,
-      "price": 64147.671875,
+      "price": 64216.789062,
       "costSgd": 5188.51,
-      "valueSgd": 3352.17,
-      "pnlSgd": -1836.34,
+      "valueSgd": 3355.79,
+      "pnlSgd": -1832.72,
       "completion": 10,
       "notes": "Small non-correlated sleeve",
       "positionLog": "",
@@ -406,10 +406,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.2568,
       "avgCost": 3652,
-      "price": 1740.719971,
+      "price": 1723.199951,
       "costSgd": 1210.09,
-      "valueSgd": 576.79,
-      "pnlSgd": -633.3,
+      "valueSgd": 570.98,
+      "pnlSgd": -639.11,
       "completion": 8,
       "notes": "Small crypto satellite",
       "positionLog": "",
@@ -507,6 +507,10 @@ window.PORTFOLIO_STATE = {
     },
     {
       "date": "2026-06-20",
+      "text": "Automated price refresh completed via GitHub Actions. Holdings unchanged; prices, market values and P/L refreshed from latest available Yahoo Finance data."
+    },
+    {
+      "date": "2026-06-21",
       "text": "Automated price refresh completed via GitHub Actions. Holdings unchanged; prices, market values and P/L refreshed from latest available Yahoo Finance data."
     }
   ],
