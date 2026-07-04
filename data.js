@@ -150,7 +150,7 @@ window.PORTFOLIO_STATE = {
     {
       "ticker": "AUTO PRICE REFRESH",
       "source": "Yahoo Finance via yfinance; TradingView/FSMOne kept as manual reference sources",
-      "detail": "Updated by GitHub Actions at 2026-07-04 14:31 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
+      "detail": "Updated by GitHub Actions at 2026-07-04 17:10 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
     }
   ],
   "notesByDate": {},
@@ -387,10 +387,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.0405,
       "avgCost": 99288,
-      "price": 62444.570312,
+      "price": 62441.421875,
       "costSgd": 5192.53,
-      "valueSgd": 3265.7,
-      "pnlSgd": -1926.83,
+      "valueSgd": 3265.54,
+      "pnlSgd": -1926.99,
       "completion": 10,
       "notes": "Small non-correlated sleeve",
       "positionLog": "",
@@ -407,10 +407,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.2568,
       "avgCost": 3652,
-      "price": 1753.97998,
+      "price": 1758.719971,
       "costSgd": 1211.02,
-      "valueSgd": 581.63,
-      "pnlSgd": -629.39,
+      "valueSgd": 583.2,
+      "pnlSgd": -627.82,
       "completion": 8,
       "notes": "Small crypto satellite",
       "positionLog": "",
@@ -653,6 +653,7 @@ window.PORTFOLIO_STATE = {
   ],
   "updates": [
     "Auto-update version: holdings are user-controlled; prices are refreshed by scheduled GitHub Action using Yahoo Finance primary data source.",
-    "Price refresh completed at 2026-07-04 14:31 SGT with Yahoo primary and sanity validation."
+    "Price refresh completed at 2026-07-04 14:31 SGT with Yahoo primary and sanity validation.",
+    "Price refresh completed at 2026-07-04 17:10 SGT with Yahoo primary and sanity validation."
   ]
 };
