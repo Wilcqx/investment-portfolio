@@ -1,7 +1,7 @@
 window.PORTFOLIO_STATE = {
-  "version": "Portfolio Dashboard V1.0 Auto Refresh",
-  "schemaVersion": 100,
-  "asOf": "2026-07-03",
+  "version": "Portfolio Dashboard V1.1 Final",
+  "schemaVersion": 101,
+  "asOf": "2026-07-04",
   "previousTotalValueSgd": 82902.01,
   "fireTargetSgd": 300000,
   "actualCashSgd": 300000,
@@ -245,15 +245,15 @@ window.PORTFOLIO_STATE = {
       "category": "US Tech",
       "market": "US",
       "currency": "USD",
-      "quantity": 5,
-      "avgCost": 395,
+      "quantity": 15,
+      "avgCost": 365,
       "price": 390.48999,
-      "costSgd": 2550.77,
-      "valueSgd": 2521.65,
-      "pnlSgd": -29.12,
+      "costSgd": 7071.13,
+      "valueSgd": 7564.94,
+      "pnlSgd": 493.81,
       "completion": 10,
       "notes": "AI platform compounder",
-      "positionLog": "",
+      "positionLog": "2026-07-04 BUY 10 @ US$350.00",
       "lastQuoteStatus": "updated",
       "lastQuoteSource": "Yahoo Finance"
     },
@@ -285,15 +285,15 @@ window.PORTFOLIO_STATE = {
       "category": "US Tech",
       "market": "US",
       "currency": "USD",
-      "quantity": 13,
-      "avgCost": 109,
+      "quantity": 23,
+      "avgCost": 146.391304,
       "price": 194.830002,
-      "costSgd": 1830.1,
-      "valueSgd": 3271.17,
-      "pnlSgd": 1441.07,
+      "costSgd": 4348.58,
+      "valueSgd": 5787.46,
+      "pnlSgd": 1438.88,
       "completion": 7,
       "notes": "AI leader",
-      "positionLog": "",
+      "positionLog": "2026-06-25 BUY 10 @ US$195.00",
       "lastQuoteStatus": "updated",
       "lastQuoteSource": "Yahoo Finance"
     },
@@ -345,15 +345,15 @@ window.PORTFOLIO_STATE = {
       "category": "Index",
       "market": "US",
       "currency": "USD",
-      "quantity": 14.345,
-      "avgCost": 556.461,
+      "quantity": 22.345,
+      "avgCost": 621.28051,
       "price": 748.429993,
-      "costSgd": 10309.55,
-      "valueSgd": 13866.16,
-      "pnlSgd": 3556.61,
+      "costSgd": 17929.68,
+      "valueSgd": 21599.12,
+      "pnlSgd": 3669.44,
       "completion": 12,
       "notes": "Core global equity engine · IVV RSP SGD 1,500/month · USD product · counts toward 300k",
-      "positionLog": "",
+      "positionLog": "2026-06-23 BUY 4 @ US$737.09999\n2026-07-04 BUY 4 @ US$737.92",
       "lastQuoteStatus": "updated",
       "lastQuoteSource": "Yahoo Finance"
     },
@@ -465,6 +465,22 @@ window.PORTFOLIO_STATE = {
         "price": 390.48999,
         "completion": 0,
         "notes": "LPX observation account"
+      },
+      {
+        "id": "lpx-IVV",
+        "virtual": false,
+        "ticker": "IVV",
+        "name": "iShares Core S&P 500 ETF",
+        "quoteSymbol": "IVV",
+        "category": "HOLDING",
+        "market": "US",
+        "currency": "USD",
+        "quantity": 2,
+        "avgCost": 735.56,
+        "price": 748.429993,
+        "completion": 0,
+        "notes": "LPX holding account",
+        "positionLog": "2026-06-23 BUY 2 @ US$735.56"
       }
     ]
   },
@@ -612,6 +628,18 @@ window.PORTFOLIO_STATE = {
     {
       "date": "2026-07-03",
       "text": "Automated price refresh completed via GitHub Actions. Holdings unchanged; prices, market values and P/L refreshed from latest available Yahoo Finance data."
+    },
+    {
+      "date": "2026-06-23",
+      "text": "Main Portfolio BUY IVV 4 @ US$737.09999; LPX BUY IVV 2 @ US$735.56."
+    },
+    {
+      "date": "2026-06-25",
+      "text": "Main Portfolio BUY NVDA 10 @ US$195.00. NVDA total 23 shares; average cost US$146.39."
+    },
+    {
+      "date": "2026-07-04",
+      "text": "Main Portfolio BUY MSFT 10 @ US$350.00 and BUY IVV 4 @ US$737.92."
     }
   ],
   "updates": [

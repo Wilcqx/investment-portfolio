@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Daily portfolio price updater.
+"""Portfolio price updater for GitHub Actions.
 
-This script updates data.js for the static Portfolio Dashboard.
-Primary data source: Yahoo Finance through yfinance.
-Fallback behavior: keep last saved price if a quote cannot be refreshed.
-
-Run locally:
-  pip install -r requirements.txt
-  python update_prices.py
+Reliability principle:
+- Yahoo Finance via yfinance is the primary automatic data source.
+- TradingView / FSMOne are recorded as reference sources only; this script does
+  not pretend to fetch them automatically because there is no stable free API
+  in this project.
+- If a new quote looks abnormal versus the last saved quote, the script keeps
+  the previous price and marks the row as validation-failed.
 """
 from __future__ import annotations
 
@@ -19,19 +19,19 @@ from typing import Any, Dict, Optional
 
 try:
     import yfinance as yf
-except Exception as exc:  # pragma: no cover
+except Exception as exc:
     raise SystemExit("Missing dependency yfinance. Run: pip install -r requirements.txt") from exc
 
 DATA_PATH = Path(__file__).with_name("data.js")
 PREFIX_RE = re.compile(r"^\s*window\.PORTFOLIO_STATE\s*=\s*", re.S)
 SGT = timezone(timedelta(hours=8))
 
-# Manual fallback references for assets where Yahoo may be delayed/unavailable.
-FALLBACK_REFERENCES = {
-    "D05.SI": "Yahoo Finance SG / TradingView SGX:D05 / FSMOne",
-    "C38U.SI": "Yahoo Finance SG / TradingView SGX:C38U / FSMOne",
-    "BS6.SI": "Yahoo Finance SG / TradingView SGX:BS6",
-    "8YZ.SI": "Yahoo Finance SG / TradingView SGX:8YZ",
+REFERENCE_SOURCES = {
+    "D05.SI": "Yahoo Finance primary; TradingView SGX:D05 and FSMOne as manual reference",
+    "C38U.SI": "Yahoo Finance primary; TradingView SGX:C38U and FSMOne as manual reference",
+    "BS6.SI": "Yahoo Finance primary; TradingView SGX:BS6 as manual reference",
+    "8YZ.SI": "Yahoo Finance primary; TradingView SGX:8YZ as manual reference",
+    "0P0000Z32L.SI": "Yahoo Finance primary; FSMOne fund page as manual reference",
 }
 
 
@@ -49,12 +49,10 @@ def save_state(state: Dict[str, Any]) -> None:
 
 
 def quote_price(symbol: str) -> Optional[float]:
-    """Return latest available Yahoo close/regular-market price."""
     if not symbol or symbol.upper() == "AMOVA ARK":
         return None
     try:
         ticker = yf.Ticker(symbol)
-        # fast_info usually works for equities, ETFs and crypto.
         fast = getattr(ticker, "fast_info", None)
         for key in ("last_price", "regular_market_previous_close", "previous_close"):
             try:
@@ -73,20 +71,39 @@ def quote_price(symbol: str) -> Optional[float]:
     return None
 
 
+def max_allowed_move(symbol: str) -> float:
+    if symbol.endswith("-USD"):
+        return 0.50  # crypto can move more
+    if symbol.endswith(".SI"):
+        return 0.18
+    return 0.25
+
+
+def validated_price(symbol: str, old_price: Optional[float]) -> tuple[Optional[float], str]:
+    new_price = quote_price(symbol)
+    if new_price is None:
+        return None, "fallback: quote unavailable; kept previous price"
+    if old_price and old_price > 0:
+        move = abs(new_price - old_price) / old_price
+        if move > max_allowed_move(symbol):
+            return None, f"validation-failed: Yahoo quote moved {move:.1%}; kept previous price"
+    return new_price, "updated: Yahoo Finance primary; sanity-checked against previous saved price"
+
+
 def fx_usd_sgd(state: Dict[str, Any]) -> float:
-    price = quote_price("SGD=X")
-    if price and price > 0:
-        return float(price)
-    return float(state.get("fx", {}).get("USD") or 1.0)
+    old_fx = float(state.get("fx", {}).get("USD") or 1.0)
+    price, status = validated_price("SGD=X", old_fx)
+    return float(price or old_fx)
 
 
-def update_holding(holding: Dict[str, Any], fx: float) -> Dict[str, Any]:
-    symbol = holding.get("quoteSymbol") or holding.get("ticker")
-    symbol = str(symbol).split(" /")[0].strip()
-    price = quote_price(symbol)
+def update_holding(holding: Dict[str, Any], fx: float) -> None:
+    symbol = str(holding.get("quoteSymbol") or holding.get("ticker") or "").split(" /")[0].strip()
+    old_price = holding.get("price")
+    price, status = validated_price(symbol, float(old_price) if old_price else None)
     if price is None:
-        holding["lastQuoteStatus"] = "fallback: kept previous price"
-        return holding
+        holding["lastQuoteStatus"] = status
+        holding["lastQuoteSource"] = REFERENCE_SOURCES.get(symbol, "Yahoo Finance attempted; previous saved price retained")
+        return
 
     currency = holding.get("currency", "SGD")
     qty = float(holding.get("quantity") or 0)
@@ -98,25 +115,24 @@ def update_holding(holding: Dict[str, Any], fx: float) -> Dict[str, Any]:
     if avg is not None:
         holding["costSgd"] = round(qty * float(avg) * rate, 2)
     holding["pnlSgd"] = round(float(holding.get("valueSgd") or 0) - float(holding.get("costSgd") or 0), 2)
-    holding["lastQuoteStatus"] = "updated"
-    holding["lastQuoteSource"] = "Yahoo Finance"
-    return holding
+    holding["lastQuoteStatus"] = status
+    holding["lastQuoteSource"] = REFERENCE_SOURCES.get(symbol, "Yahoo Finance primary; TradingView/FSMOne manual check if needed")
 
 
-def update_rsp(item: Dict[str, Any], fx: float) -> Dict[str, Any]:
+def update_rsp(item: Dict[str, Any], fx: float) -> None:
     symbol = item.get("quoteSymbol")
     if not symbol:
-        return item
-    price = quote_price(symbol)
+        return
+    old_price = item.get("currentPrice")
+    price, status = validated_price(symbol, float(old_price) if old_price else None)
     if price is None:
-        item["lastQuoteStatus"] = "fallback: kept previous price"
-        return item
+        item["lastQuoteStatus"] = status
+        return
     qty = float(item.get("quantity") or 0)
     item["currentPrice"] = round(price, 6)
     item["currentValueSgd"] = round(qty * price, 2)
-    item["lastQuoteStatus"] = "updated"
-    item["lastQuoteSource"] = "Yahoo Finance"
-    return item
+    item["lastQuoteStatus"] = status
+    item["lastQuoteSource"] = REFERENCE_SOURCES.get(symbol, "Yahoo Finance primary")
 
 
 def main() -> None:
@@ -132,25 +148,27 @@ def main() -> None:
         update_rsp(item, fx)
 
     for holding in state.get("lpx", {}).get("holdings", []):
-        symbol = holding.get("quoteSymbol") or holding.get("ticker")
-        price = quote_price(symbol)
+        symbol = str(holding.get("quoteSymbol") or holding.get("ticker") or "").split(" /")[0].strip()
+        old_price = holding.get("price")
+        price, status = validated_price(symbol, float(old_price) if old_price else None)
         if price:
             holding["price"] = round(price, 6)
+        holding["lastQuoteStatus"] = status
+        holding["lastQuoteSource"] = REFERENCE_SOURCES.get(symbol, "Yahoo Finance primary; manual reference if needed")
 
     now = datetime.now(SGT)
     state["asOf"] = now.strftime("%Y-%m-%d")
-    state["version"] = "Portfolio Dashboard V1.0 Auto Refresh"
+    state["version"] = "Portfolio Dashboard V1.1 Final Auto Refresh"
     state["quoteEvidence"] = [{
         "ticker": "AUTO PRICE REFRESH",
-        "source": "Yahoo Finance primary; TradingView/FSMOne manual fallback references",
-        "detail": f"Updated by GitHub Actions at {now.strftime('%Y-%m-%d %H:%M SGT')}. If a quote is unavailable, last saved price is retained."
+        "source": "Yahoo Finance via yfinance; TradingView/FSMOne kept as manual reference sources",
+        "detail": f"Updated by GitHub Actions at {now.strftime('%Y-%m-%d %H:%M SGT')}. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
     }]
-    state.setdefault("history", []).append({
-        "date": now.strftime("%Y-%m-%d"),
-        "text": "Automated price refresh completed via GitHub Actions. Holdings unchanged; prices, market values and P/L refreshed from latest available Yahoo Finance data."
-    })
-    # Keep history compact enough for the website.
-    state["history"] = state.get("history", [])[-60:]
+    state.setdefault("updates", [])
+    msg = f"Price refresh completed at {now.strftime('%Y-%m-%d %H:%M SGT')} with Yahoo primary and sanity validation."
+    if not state["updates"] or state["updates"][-1] != msg:
+        state["updates"].append(msg)
+    state["updates"] = state["updates"][-20:]
 
     save_state(state)
 

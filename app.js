@@ -620,7 +620,15 @@ function renderAttention(totals) {
   const topHolding = [...state.holdings].sort((a, b) => (Number(b.valueSgd) || 0) - (Number(a.valueSgd) || 0))[0];
   const topWeight = topHolding && totals.value ? ((Number(topHolding.valueSgd) || 0) / totals.value) * 100 : 0;
 
-  items.push(["SG EXPOSURE", `${formatPlainPercent(sgWeight)} of current portfolio is Singapore-listed. Keep watching home-market concentration.`]);
+  const usValue = state.holdings.filter((holding) => holding.market === "US").reduce((sum, holding) => sum + holdingValueSgd(holding), 0);
+  const usWeight = totals.value ? (usValue / totals.value) * 100 : 0;
+  const techValue = state.holdings.filter((holding) => holding.category === "US Tech").reduce((sum, holding) => sum + holdingValueSgd(holding), 0);
+  const techWeight = totals.value ? (techValue / totals.value) * 100 : 0;
+  const fireProgress = state.fireTargetSgd ? (getFireValue() / state.fireTargetSgd) * 100 : 0;
+
+  items.push(["FIRE PROGRESS", `${moneyWhole(getFireValue())} / ${moneyWhole(state.fireTargetSgd)} · ${formatPlainPercent(fireProgress)} built.`]);
+  items.push(["US / SG EXPOSURE", `US ${formatPlainPercent(usWeight)} · Singapore ${formatPlainPercent(sgWeight)}.`]);
+  items.push(["TECH CONCENTRATION", `US Tech is ${formatPlainPercent(techWeight)} of current portfolio.`]);
   if (bankWeight > 25) items.push(["BANK CONCENTRATION", `Bank sleeve is ${formatPlainPercent(bankWeight)}, above the 25% watch line.`]);
   if (topHolding) items.push(["LARGEST SINGLE LINE", `${topHolding.ticker} is ${formatPlainPercent(topWeight)} of current portfolio.`]);
   if (cryptoWeight > 8) items.push(["CRYPTO WATCH", `Crypto is ${formatPlainPercent(cryptoWeight)}, close to the planned satellite size.`]);
@@ -824,12 +832,200 @@ function submitDailyNote() {
     if (els.noteStatus) els.noteStatus.textContent = noteStatusText();
     return;
   }
+
+  const applied = applyTradeNote(draft);
   const key = todayKey();
   state.notesByDate ||= {};
   state.notesByDate[key] = [state.notesByDate[key], draft].filter(Boolean).join("\n");
+
   els.dailyNotes.value = "";
-  if (els.noteStatus) els.noteStatus.textContent = "SAVED";
-  persist();
+  if (els.noteStatus) els.noteStatus.textContent = applied.count ? `APPLIED ${applied.count}` : "SAVED";
+  render();
+
+  if (applied.count) {
+    downloadCurrentDataJs();
+  } else {
+    persist();
+  }
+}
+
+
+function applyTradeNote(draft) {
+  const lines = draft.split(/\n+/).map((line) => line.trim()).filter(Boolean);
+  let currentAccount = "Main";
+  let count = 0;
+  const messages = [];
+
+  lines.forEach((line) => {
+    const lower = line.toLowerCase();
+    if (/^(main|主仓)\s*:?$/i.test(line)) {
+      currentAccount = "Main";
+      return;
+    }
+    if (/^lpx\s*:?$/i.test(line)) {
+      currentAccount = "LPX";
+      return;
+    }
+    if (lower.includes("lpx")) currentAccount = "LPX";
+    if (line.includes("主仓") || lower.includes("main")) currentAccount = "Main";
+
+    const trade = parseTradeLine(line, currentAccount);
+    if (!trade) return;
+    const result = applyTrade(trade);
+    if (result) {
+      count += 1;
+      messages.push(result);
+    }
+  });
+
+  if (messages.length) {
+    state.history ||= [];
+    state.history.push({ date: todayKey(), text: messages.join(" ") });
+    state.history = state.history.slice(-80);
+    state.version = "Portfolio Dashboard V1.1 Note Update";
+    state.asOf = todayKey();
+  }
+
+  return { count, messages };
+}
+
+function parseTradeLine(line, account) {
+  const priceMatch = line.match(/@\s*([0-9]+(?:\.[0-9]+)?)/);
+  if (!priceMatch) return null;
+  const price = Number(priceMatch[1]);
+  const knownTickers = ["MSFT", "NVDA", "IVV", "GOOGL", "GOOG", "PLTR", "MCD", "DBS", "CICT", "BTC", "ETH", "YZJ"];
+  const upperLine = line.toUpperCase();
+  let ticker = knownTickers.find((item) => upperLine.includes(item));
+  if (ticker === "GOOG") ticker = "GOOGL";
+  if (!ticker) {
+    const tickerMatch = upperLine.match(/\b[A-Z]{2,6}\b/);
+    ticker = tickerMatch ? tickerMatch[0] : "";
+  }
+  if (!ticker) return null;
+
+  let qty = null;
+  const qtyBeforeShare = line.match(/([0-9]+(?:\.[0-9]+)?)\s*(?:shares?|share|股)/i);
+  if (qtyBeforeShare) qty = Number(qtyBeforeShare[1]);
+  if (qty === null) {
+    const afterTicker = upperLine.match(new RegExp(`${ticker}[^0-9]*([0-9]+(?:\\.[0-9]+)?)`));
+    if (afterTicker) qty = Number(afterTicker[1]);
+  }
+  if (!qty || qty <= 0) return null;
+
+  const action = /(SELL|卖|卖出|减仓)/i.test(line) ? "SELL" : "BUY";
+  return { account, action, ticker, qty, price };
+}
+
+function applyTrade(trade) {
+  if (trade.account === "LPX") return applyLpxTrade(trade);
+  return applyMainTrade(trade);
+}
+
+function applyMainTrade({ action, ticker, qty, price }) {
+  const holding = state.holdings.find((item) => item.ticker.toUpperCase() === ticker.toUpperCase());
+  if (!holding) return "";
+  const oldQty = Number(holding.quantity) || 0;
+  const oldAvg = Number(holding.avgCost) || price;
+  let newQty = oldQty;
+  let newAvg = oldAvg;
+
+  if (action === "BUY") {
+    newQty = oldQty + qty;
+    newAvg = newQty ? ((oldQty * oldAvg) + (qty * price)) / newQty : price;
+  } else {
+    newQty = Math.max(0, oldQty - qty);
+  }
+
+  holding.quantity = round6(newQty);
+  holding.avgCost = round6(newAvg);
+  refreshHoldingAmounts(holding);
+  holding.completion = buildCompletionFor(holding);
+  holding.positionLog = [holding.positionLog, `${todayKey()} ${action} ${qty} @ ${holding.currency === "SGD" ? "S$" : "US$"}${price}`].filter(Boolean).join("\n");
+  return `Main ${action} ${ticker} ${qty} @ ${price}.`;
+}
+
+function applyLpxTrade({ action, ticker, qty, price }) {
+  state.lpx ||= { initialCashUsd: 0, holdings: [] };
+  state.lpx.holdings ||= [];
+  let holding = state.lpx.holdings.find((item) => item.ticker.toUpperCase() === ticker.toUpperCase());
+  if (!holding) {
+    holding = {
+      id: `lpx-${ticker}`,
+      virtual: false,
+      ticker,
+      name: tickerName(ticker),
+      quoteSymbol: ticker,
+      category: "HOLDING",
+      market: ticker.includes(".SI") ? "SG" : "US",
+      currency: ticker.includes(".SI") ? "SGD" : "USD",
+      quantity: 0,
+      avgCost: price,
+      price,
+      completion: 0,
+      notes: "LPX holding account",
+      positionLog: ""
+    };
+    state.lpx.holdings.push(holding);
+  }
+
+  const oldQty = Number(holding.quantity) || 0;
+  const oldAvg = Number(holding.avgCost) || price;
+  let newQty = oldQty;
+  let newAvg = oldAvg;
+  if (action === "BUY") {
+    newQty = oldQty + qty;
+    newAvg = newQty ? ((oldQty * oldAvg) + (qty * price)) / newQty : price;
+  } else {
+    newQty = Math.max(0, oldQty - qty);
+  }
+  holding.quantity = round6(newQty);
+  holding.avgCost = round6(newAvg);
+  holding.price ||= price;
+  holding.positionLog = [holding.positionLog, `${todayKey()} ${action} ${qty} @ US$${price}`].filter(Boolean).join("\n");
+  return `LPX ${action} ${ticker} ${qty} @ ${price}.`;
+}
+
+function refreshHoldingAmounts(holding) {
+  const rate = fxRate(holding.currency);
+  const qty = Number(holding.quantity) || 0;
+  const avg = Number(holding.avgCost) || 0;
+  const price = Number(holding.price) || avg;
+  holding.costSgd = round2(qty * avg * rate);
+  holding.valueSgd = round2(qty * price * rate);
+  holding.pnlSgd = round2(holding.valueSgd - holding.costSgd);
+}
+
+function buildCompletionFor(holding) {
+  const targetMap = { IVV: 100000, DBS: 85000, MSFT: 20000, GOOGL: 10000, NVDA: 20000, PLTR: 5000, MCD: 10000, CICT: 10000, BTC: 10000, ETH: 5000 };
+  const target = targetMap[holding.ticker] || state.targetPlan.find((item) => item.category === allocationCategoryFor(holding))?.targetSgd || 0;
+  if (!target) return Number(holding.completion) || 0;
+  return round2((holding.costSgd || calculatedCostSgd(holding)) / target * 100);
+}
+
+function tickerName(ticker) {
+  const names = { IVV: "iShares Core S&P 500 ETF", MSFT: "Microsoft", NVDA: "NVIDIA", GOOGL: "Google Class A", MCD: "McDonald's", PLTR: "Palantir Technologies" };
+  return names[ticker] || ticker;
+}
+
+function downloadCurrentDataJs() {
+  const payload = `window.PORTFOLIO_STATE = ${JSON.stringify(state, null, 2)};\n`;
+  const blob = new Blob([payload], { type: "text/javascript" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "data.js";
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function round2(value) {
+  return Math.round((Number(value) || 0) * 100) / 100;
+}
+
+function round6(value) {
+  return Math.round((Number(value) || 0) * 1000000) / 1000000;
 }
 
 function noteStatusText() {
