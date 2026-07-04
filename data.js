@@ -1,5 +1,5 @@
 window.PORTFOLIO_STATE = {
-  "version": "Portfolio Dashboard V1.1 Final",
+  "version": "Portfolio Dashboard V1.1 Final Auto Refresh",
   "schemaVersion": 101,
   "asOf": "2026-07-04",
   "previousTotalValueSgd": 82902.01,
@@ -9,7 +9,7 @@ window.PORTFOLIO_STATE = {
   "fireCashflowTargetMonthly": 6000,
   "stage": "Build-up phase",
   "fx": {
-    "USD": 1.29153,
+    "USD": 1.2913,
     "SGD": 1
   },
   "summaryAdjustment": {
@@ -26,13 +26,13 @@ window.PORTFOLIO_STATE = {
       "amountSgd": 1000,
       "quantity": 1630.29,
       "avgCost": 6.791,
-      "currentPrice": 7.9053,
-      "currentValueSgd": 12887.93,
+      "currentPrice": 7.9195,
+      "currentValueSgd": 12911.08,
       "countedInFire": true,
       "account": "SRS",
       "status": "Locked",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; FSMOne fund page as manual reference"
     },
     {
       "name": "IVV",
@@ -149,8 +149,8 @@ window.PORTFOLIO_STATE = {
   "quoteEvidence": [
     {
       "ticker": "AUTO PRICE REFRESH",
-      "source": "Yahoo Finance primary; TradingView/FSMOne manual fallback references",
-      "detail": "Updated by GitHub Actions at 2026-07-03 23:59 SGT. If a quote is unavailable, last saved price is retained."
+      "source": "Yahoo Finance via yfinance; TradingView/FSMOne kept as manual reference sources",
+      "detail": "Updated by GitHub Actions at 2026-07-04 14:31 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
     }
   ],
   "notesByDate": {},
@@ -173,8 +173,8 @@ window.PORTFOLIO_STATE = {
       "completion": 12,
       "notes": "Cash-flow core",
       "positionLog": "",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView SGX:D05 and FSMOne as manual reference"
     },
     {
       "id": "CICT",
@@ -193,8 +193,8 @@ window.PORTFOLIO_STATE = {
       "completion": 44,
       "notes": "Singapore REIT sleeve",
       "positionLog": "",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView SGX:C38U and FSMOne as manual reference"
     },
     {
       "id": "YZJ Shipbuilding",
@@ -213,8 +213,8 @@ window.PORTFOLIO_STATE = {
       "completion": 34,
       "notes": "Shipbuilding cycle",
       "positionLog": "",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView SGX:BS6 as manual reference"
     },
     {
       "id": "YZJ Maritime",
@@ -234,8 +234,8 @@ window.PORTFOLIO_STATE = {
       "notes": "Yahoo 8YZ.SI and TradingView SGX:8YZ validated",
       "positionLog": "",
       "quoteUrl": "https://www.tradingview.com/symbols/SGX-8YZ/",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView SGX:8YZ as manual reference"
     },
     {
       "id": "MSFT",
@@ -248,14 +248,14 @@ window.PORTFOLIO_STATE = {
       "quantity": 15,
       "avgCost": 365,
       "price": 390.48999,
-      "costSgd": 7071.13,
-      "valueSgd": 7564.94,
-      "pnlSgd": 493.81,
+      "costSgd": 7069.87,
+      "valueSgd": 7563.6,
+      "pnlSgd": 493.73,
       "completion": 10,
       "notes": "AI platform compounder",
       "positionLog": "2026-07-04 BUY 10 @ US$350.00",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView/FSMOne manual check if needed"
     },
     {
       "id": "GOOGL",
@@ -268,14 +268,14 @@ window.PORTFOLIO_STATE = {
       "quantity": 5,
       "avgCost": 351,
       "price": 359.910004,
-      "costSgd": 2266.64,
-      "valueSgd": 2324.17,
+      "costSgd": 2266.23,
+      "valueSgd": 2323.76,
       "pnlSgd": 57.53,
       "completion": 9,
       "notes": "Valuation recovery",
       "positionLog": "",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView/FSMOne manual check if needed"
     },
     {
       "id": "NVDA",
@@ -288,14 +288,14 @@ window.PORTFOLIO_STATE = {
       "quantity": 23,
       "avgCost": 146.391304,
       "price": 194.830002,
-      "costSgd": 4348.58,
-      "valueSgd": 5787.46,
-      "pnlSgd": 1438.88,
+      "costSgd": 4347.81,
+      "valueSgd": 5786.43,
+      "pnlSgd": 1438.62,
       "completion": 7,
       "notes": "AI leader",
       "positionLog": "2026-06-25 BUY 10 @ US$195.00",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView/FSMOne manual check if needed"
     },
     {
       "id": "PLTR",
@@ -308,14 +308,14 @@ window.PORTFOLIO_STATE = {
       "quantity": 4,
       "avgCost": 129,
       "price": 129.300003,
-      "costSgd": 666.43,
-      "valueSgd": 667.98,
+      "costSgd": 666.31,
+      "valueSgd": 667.86,
       "pnlSgd": 1.55,
       "completion": 9,
       "notes": "High growth, high volatility",
       "positionLog": "",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView/FSMOne manual check if needed"
     },
     {
       "id": "MCD",
@@ -328,14 +328,14 @@ window.PORTFOLIO_STATE = {
       "quantity": 17,
       "avgCost": 283,
       "price": 280.630005,
-      "costSgd": 6213.55,
-      "valueSgd": 6161.52,
-      "pnlSgd": -52.03,
+      "costSgd": 6212.44,
+      "valueSgd": 6160.42,
+      "pnlSgd": -52.02,
       "completion": 62,
       "notes": "Defensive consumer",
       "positionLog": "",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView/FSMOne manual check if needed"
     },
     {
       "id": "IVV",
@@ -348,14 +348,14 @@ window.PORTFOLIO_STATE = {
       "quantity": 22.345,
       "avgCost": 621.28051,
       "price": 748.429993,
-      "costSgd": 17929.68,
-      "valueSgd": 21599.12,
-      "pnlSgd": 3669.44,
+      "costSgd": 17926.49,
+      "valueSgd": 21595.27,
+      "pnlSgd": 3668.78,
       "completion": 12,
       "notes": "Core global equity engine · IVV RSP SGD 1,500/month · USD product · counts toward 300k",
       "positionLog": "2026-06-23 BUY 4 @ US$737.09999\n2026-07-04 BUY 4 @ US$737.92",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView/FSMOne manual check if needed"
     },
     {
       "id": "AMOVA ARK",
@@ -374,7 +374,8 @@ window.PORTFOLIO_STATE = {
       "completion": 0,
       "notes": "Formerly Nikko AM · RSP stopped · loss position",
       "positionLog": "",
-      "lastQuoteStatus": "fallback: kept previous price"
+      "lastQuoteStatus": "fallback: quote unavailable; kept previous price",
+      "lastQuoteSource": "Yahoo Finance attempted; previous saved price retained"
     },
     {
       "id": "BTC",
@@ -386,15 +387,15 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.0405,
       "avgCost": 99288,
-      "price": 61868.25,
-      "costSgd": 5193.45,
-      "valueSgd": 3236.14,
-      "pnlSgd": -1957.31,
+      "price": 62444.570312,
+      "costSgd": 5192.53,
+      "valueSgd": 3265.7,
+      "pnlSgd": -1926.83,
       "completion": 10,
       "notes": "Small non-correlated sleeve",
       "positionLog": "",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView/FSMOne manual check if needed"
     },
     {
       "id": "ETH",
@@ -406,15 +407,15 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.2568,
       "avgCost": 3652,
-      "price": 1729.670044,
-      "costSgd": 1211.24,
-      "valueSgd": 573.67,
-      "pnlSgd": -637.57,
+      "price": 1753.97998,
+      "costSgd": 1211.02,
+      "valueSgd": 581.63,
+      "pnlSgd": -629.39,
       "completion": 8,
       "notes": "Small crypto satellite",
       "positionLog": "",
-      "lastQuoteStatus": "updated",
-      "lastQuoteSource": "Yahoo Finance"
+      "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+      "lastQuoteSource": "Yahoo Finance primary; TradingView/FSMOne manual check if needed"
     }
   ],
   "lpx": {
@@ -434,7 +435,9 @@ window.PORTFOLIO_STATE = {
         "avgCost": 350,
         "price": 359.910004,
         "completion": 0,
-        "notes": "LPX observation account"
+        "notes": "LPX observation account",
+        "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+        "lastQuoteSource": "Yahoo Finance primary; manual reference if needed"
       },
       {
         "id": "lpx-MCD",
@@ -449,7 +452,9 @@ window.PORTFOLIO_STATE = {
         "avgCost": 282.18,
         "price": 280.630005,
         "completion": 0,
-        "notes": "LPX observation account"
+        "notes": "LPX observation account",
+        "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+        "lastQuoteSource": "Yahoo Finance primary; manual reference if needed"
       },
       {
         "id": "lpx-MSFT",
@@ -464,7 +469,9 @@ window.PORTFOLIO_STATE = {
         "avgCost": 395,
         "price": 390.48999,
         "completion": 0,
-        "notes": "LPX observation account"
+        "notes": "LPX observation account",
+        "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+        "lastQuoteSource": "Yahoo Finance primary; manual reference if needed"
       },
       {
         "id": "lpx-IVV",
@@ -480,7 +487,9 @@ window.PORTFOLIO_STATE = {
         "price": 748.429993,
         "completion": 0,
         "notes": "LPX holding account",
-        "positionLog": "2026-06-23 BUY 2 @ US$735.56"
+        "positionLog": "2026-06-23 BUY 2 @ US$735.56",
+        "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
+        "lastQuoteSource": "Yahoo Finance primary; manual reference if needed"
       }
     ]
   },
@@ -643,6 +652,7 @@ window.PORTFOLIO_STATE = {
     }
   ],
   "updates": [
-    "Auto-update version: holdings are user-controlled; prices are refreshed by scheduled GitHub Action using Yahoo Finance primary data source."
+    "Auto-update version: holdings are user-controlled; prices are refreshed by scheduled GitHub Action using Yahoo Finance primary data source.",
+    "Price refresh completed at 2026-07-04 14:31 SGT with Yahoo primary and sanity validation."
   ]
 };
