@@ -150,7 +150,7 @@ window.PORTFOLIO_STATE = {
     {
       "ticker": "AUTO PRICE REFRESH",
       "source": "Yahoo Finance via yfinance; TradingView/FSMOne kept as manual reference sources",
-      "detail": "Updated by GitHub Actions at 2026-07-05 17:47 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
+      "detail": "Updated by GitHub Actions at 2026-07-05 20:58 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
     }
   ],
   "notesByDate": {},
@@ -387,10 +387,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.0405,
       "avgCost": 99288,
-      "price": 62517.839844,
+      "price": 62679.960938,
       "costSgd": 5192.53,
-      "valueSgd": 3269.54,
-      "pnlSgd": -1922.99,
+      "valueSgd": 3278.01,
+      "pnlSgd": -1914.52,
       "completion": 10,
       "notes": "Small non-correlated sleeve",
       "positionLog": "",
@@ -407,10 +407,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.2568,
       "avgCost": 3652,
-      "price": 1752.280029,
+      "price": 1763.310059,
       "costSgd": 1211.02,
-      "valueSgd": 581.07,
-      "pnlSgd": -629.95,
+      "valueSgd": 584.72,
+      "pnlSgd": -626.3,
       "completion": 8,
       "notes": "Small crypto satellite",
       "positionLog": "",
@@ -656,6 +656,7 @@ window.PORTFOLIO_STATE = {
     "Price refresh completed at 2026-07-04 14:31 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-07-04 17:10 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-07-04 20:48 SGT with Yahoo primary and sanity validation.",
-    "Price refresh completed at 2026-07-05 17:47 SGT with Yahoo primary and sanity validation."
+    "Price refresh completed at 2026-07-05 17:47 SGT with Yahoo primary and sanity validation.",
+    "Price refresh completed at 2026-07-05 20:58 SGT with Yahoo primary and sanity validation."
   ]
 };
