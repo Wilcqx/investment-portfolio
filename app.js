@@ -839,7 +839,13 @@ function submitDailyNote() {
   state.notesByDate[key] = [state.notesByDate[key], draft].filter(Boolean).join("\n");
 
   els.dailyNotes.value = "";
-  if (els.noteStatus) els.noteStatus.textContent = applied.count ? `APPLIED ${applied.count}` : "SAVED";
+  if (els.noteStatus) {
+    if (applied.failedLines.length) {
+      els.noteStatus.textContent = `APPLIED ${applied.count}, 未识别 ${applied.failedLines.length} 行: ${applied.failedLines.join(" | ")}`;
+    } else {
+      els.noteStatus.textContent = applied.count ? `APPLIED ${applied.count}` : "SAVED";
+    }
+  }
   render();
 
   if (applied.count) {
@@ -855,6 +861,7 @@ function applyTradeNote(draft) {
   let currentAccount = "Main";
   let count = 0;
   const messages = [];
+  const failedLines = [];
 
   lines.forEach((line) => {
     const lower = line.toLowerCase();
@@ -870,11 +877,16 @@ function applyTradeNote(draft) {
     if (line.includes("主仓") || lower.includes("main")) currentAccount = "Main";
 
     const trade = parseTradeLine(line, currentAccount);
-    if (!trade) return;
+    if (!trade) {
+      failedLines.push(line);
+      return;
+    }
     const result = applyTrade(trade);
-    if (result) {
+    if (result.ok) {
       count += 1;
-      messages.push(result);
+      messages.push(result.text);
+    } else {
+      failedLines.push(`${line} (${result.text})`);
     }
   });
 
@@ -886,34 +898,111 @@ function applyTradeNote(draft) {
     state.asOf = todayKey();
   }
 
-  return { count, messages };
+  return { count, messages, failedLines };
+}
+
+const fuzzyAssetAliases = [
+  { ticker: "YZJ Shipbuilding", aliases: ["YZJ SHIPBUILDING", "YZJ SB"] },
+  { ticker: "YZJ Maritime", aliases: ["YZJ MARITIME", "YZJ MT", "YZJ MTM"] },
+  { ticker: "AMOVA ARK", aliases: ["AMOVA ARK", "AMOVA"] },
+  { ticker: "Allianz G&I", aliases: ["ALLIANZ GI", "ALLIANZ"] },
+  { ticker: "IVV", aliases: ["SP500", "SPX500"] }
+];
+
+const noteStopWords = new Set(["BUY", "SELL", "LPX", "MAIN", "SHARE", "SHARES", "STOCK", "STOCKS"]);
+
+function levenshtein(a, b) {
+  const m = a.length;
+  const n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1]
+        ? dp[i - 1][j - 1]
+        : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[m][n];
+}
+
+function noteCandidateWords(line) {
+  const cleaned = line.toUpperCase().replace(/[^A-Z0-9\s]/g, " ");
+  const words = cleaned.split(/\s+/).filter((word) => word && !noteStopWords.has(word) && !/^\d+(\.\d+)?$/.test(word));
+  const candidates = [];
+  words.forEach((word, i) => {
+    candidates.push(word);
+    if (i + 1 < words.length) candidates.push(`${word} ${words[i + 1]}`);
+  });
+  return candidates;
+}
+
+function bestFuzzyAssetMatch(line) {
+  const candidates = noteCandidateWords(line);
+  let best = null;
+  fuzzyAssetAliases.forEach(({ ticker, aliases }) => {
+    aliases.forEach((alias) => {
+      candidates.forEach((candidate) => {
+        const distance = levenshtein(candidate, alias);
+        const threshold = alias.length > 6 ? 2 : 1;
+        if (distance <= threshold && (!best || distance < best.distance)) {
+          best = { ticker, distance };
+        }
+      });
+    });
+  });
+  return best;
+}
+
+function extractUnknownTicker(line) {
+  const cleaned = line.toUpperCase().replace(/[^A-Z0-9\s.]/g, " ");
+  const matches = cleaned.match(/\b[A-Z]{2,10}\b/g) || [];
+  return matches.find((word) => !noteStopWords.has(word)) || "";
+}
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function parseTradeLine(line, account) {
   const priceMatch = line.match(/@\s*([0-9]+(?:\.[0-9]+)?)/);
   if (!priceMatch) return null;
   const price = Number(priceMatch[1]);
-  const knownTickers = ["MSFT", "NVDA", "IVV", "GOOGL", "GOOG", "PLTR", "MCD", "DBS", "CICT", "BTC", "ETH", "YZJ"];
-  const upperLine = line.toUpperCase();
-  let ticker = knownTickers.find((item) => upperLine.includes(item));
-  if (ticker === "GOOG") ticker = "GOOGL";
-  if (!ticker) {
-    const tickerMatch = upperLine.match(/\b[A-Z]{2,6}\b/);
-    ticker = tickerMatch ? tickerMatch[0] : "";
+
+  let ticker = "";
+  let fuzzyMatch = null;
+
+  const fuzzy = bestFuzzyAssetMatch(line);
+  if (fuzzy) {
+    ticker = fuzzy.ticker;
+    if (fuzzy.distance > 0) fuzzyMatch = fuzzy;
   }
+
+  if (!ticker) {
+    const knownTickers = ["MSFT", "NVDA", "IVV", "GOOGL", "GOOG", "PLTR", "MCD", "DBS", "CICT", "BTC", "ETH"];
+    const upperLine = line.toUpperCase();
+    let known = knownTickers.find((item) => upperLine.includes(item));
+    if (known === "GOOG") known = "GOOGL";
+    if (known) ticker = known;
+  }
+
+  if (!ticker) ticker = extractUnknownTicker(line);
   if (!ticker) return null;
 
   let qty = null;
   const qtyBeforeShare = line.match(/([0-9]+(?:\.[0-9]+)?)\s*(?:shares?|share|股)/i);
   if (qtyBeforeShare) qty = Number(qtyBeforeShare[1]);
   if (qty === null) {
-    const afterTicker = upperLine.match(new RegExp(`${ticker}[^0-9]*([0-9]+(?:\\.[0-9]+)?)`));
+    const upperLine = line.toUpperCase();
+    const anchor = escapeRegex(ticker.split(" ")[0]);
+    const afterTicker = upperLine.match(new RegExp(`${anchor}[^0-9]*([0-9]+(?:\\.[0-9]+)?)`));
     if (afterTicker) qty = Number(afterTicker[1]);
   }
   if (!qty || qty <= 0) return null;
 
   const action = /(SELL|卖|卖出|减仓)/i.test(line) ? "SELL" : "BUY";
-  return { account, action, ticker, qty, price };
+  return { account, action, ticker, qty, price, fuzzyMatch };
 }
 
 function applyTrade(trade) {
@@ -921,9 +1010,44 @@ function applyTrade(trade) {
   return applyMainTrade(trade);
 }
 
-function applyMainTrade({ action, ticker, qty, price }) {
+function createAutoHolding(ticker, price) {
+  const market = ticker.includes(".SI") ? "SG" : "US";
+  const currency = market === "SG" ? "SGD" : "USD";
+  return {
+    id: crypto.randomUUID(),
+    ticker,
+    name: tickerName(ticker),
+    quoteSymbol: guessQuoteSymbol(ticker, market),
+    category: "Uncategorized",
+    market,
+    currency,
+    quantity: 0,
+    avgCost: null,
+    price,
+    costSgd: 0,
+    valueSgd: 0,
+    pnlSgd: 0,
+    completion: 0,
+    notes: "笔记自动建仓，请检查分类/市场/币种",
+    positionLog: ""
+  };
+}
+
+function applyMainTrade({ action, ticker, qty, price, fuzzyMatch }) {
   const holding = state.holdings.find((item) => item.ticker.toUpperCase() === ticker.toUpperCase());
-  if (!holding) return "";
+  if (holding) return applyHoldingTrade(holding, { action, qty, price, fuzzyMatch }, false);
+
+  const rspItem = (state.rsp || []).find((item) => (item.ticker || item.name || "").toUpperCase() === ticker.toUpperCase());
+  if (rspItem) return applyRspTrade(rspItem, { action, ticker, qty, price, fuzzyMatch });
+
+  if (action === "SELL") return { ok: false, text: `未找到持仓 ${ticker}，无法卖出` };
+
+  const newHolding = createAutoHolding(ticker, price);
+  state.holdings.push(newHolding);
+  return applyHoldingTrade(newHolding, { action, qty, price, fuzzyMatch }, true);
+}
+
+function applyHoldingTrade(holding, { action, qty, price, fuzzyMatch }, createdNew) {
   const oldQty = Number(holding.quantity) || 0;
   const oldAvg = Number(holding.avgCost) || price;
   let newQty = oldQty;
@@ -941,14 +1065,43 @@ function applyMainTrade({ action, ticker, qty, price }) {
   refreshHoldingAmounts(holding);
   holding.completion = buildCompletionFor(holding);
   holding.positionLog = [holding.positionLog, `${todayKey()} ${action} ${qty} @ ${holding.currency === "SGD" ? "S$" : "US$"}${price}`].filter(Boolean).join("\n");
-  return `Main ${action} ${ticker} ${qty} @ ${price}.`;
+
+  const fuzzyNote = fuzzyMatch ? ` (模糊匹配: ${fuzzyMatch.ticker})` : "";
+  const newNote = createdNew ? " (新建持仓，请检查分类/市场/币种)" : "";
+  return { ok: true, text: `Main ${action} ${holding.ticker} ${qty} @ ${price}.${fuzzyNote}${newNote}` };
 }
 
-function applyLpxTrade({ action, ticker, qty, price }) {
+function applyRspTrade(item, { action, ticker, qty, price, fuzzyMatch }) {
+  const oldQty = Number(item.quantity) || 0;
+  const oldAvg = Number(item.avgCost) || price;
+  let newQty = oldQty;
+  let newAvg = oldAvg;
+
+  if (action === "BUY") {
+    newQty = oldQty + qty;
+    newAvg = newQty ? ((oldQty * oldAvg) + (qty * price)) / newQty : price;
+  } else {
+    newQty = Math.max(0, oldQty - qty);
+  }
+
+  item.quantity = round6(newQty);
+  item.avgCost = round6(newAvg);
+  const currentPrice = Number(item.currentPrice) || price;
+  item.currentValueSgd = round2(newQty * currentPrice);
+  item.positionLog = [item.positionLog, `${todayKey()} ${action} ${qty} @ S$${price}`].filter(Boolean).join("\n");
+
+  const fuzzyNote = fuzzyMatch ? ` (模糊匹配: ${fuzzyMatch.ticker})` : "";
+  return { ok: true, text: `Main ${action} ${ticker} ${qty} @ ${price} (定投持仓).${fuzzyNote}` };
+}
+
+function applyLpxTrade({ action, ticker, qty, price, fuzzyMatch }) {
   state.lpx ||= { initialCashUsd: 0, holdings: [] };
   state.lpx.holdings ||= [];
   let holding = state.lpx.holdings.find((item) => item.ticker.toUpperCase() === ticker.toUpperCase());
+  let createdNew = false;
+
   if (!holding) {
+    if (action === "SELL") return { ok: false, text: `未找到 LPX 持仓 ${ticker}，无法卖出` };
     holding = {
       id: `lpx-${ticker}`,
       virtual: false,
@@ -966,6 +1119,7 @@ function applyLpxTrade({ action, ticker, qty, price }) {
       positionLog: ""
     };
     state.lpx.holdings.push(holding);
+    createdNew = true;
   }
 
   const oldQty = Number(holding.quantity) || 0;
@@ -982,7 +1136,10 @@ function applyLpxTrade({ action, ticker, qty, price }) {
   holding.avgCost = round6(newAvg);
   holding.price ||= price;
   holding.positionLog = [holding.positionLog, `${todayKey()} ${action} ${qty} @ US$${price}`].filter(Boolean).join("\n");
-  return `LPX ${action} ${ticker} ${qty} @ ${price}.`;
+
+  const fuzzyNote = fuzzyMatch ? ` (模糊匹配: ${fuzzyMatch.ticker})` : "";
+  const newNote = createdNew ? " (新建持仓)" : "";
+  return { ok: true, text: `LPX ${action} ${ticker} ${qty} @ ${price}.${fuzzyNote}${newNote}` };
 }
 
 function refreshHoldingAmounts(holding) {
