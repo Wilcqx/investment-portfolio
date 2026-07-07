@@ -300,7 +300,10 @@
       </form>
     </dialog>
 
-    <script src="./data.js?v=20260616-auto"></script>
-    <script src="./app.js?v=20260616-auto"></script>
+    <script>
+  const dashboardAssetVersion = new Date().toISOString().slice(0, 13);
+  document.write(`<script src="./data.js?v=${dashboardAssetVersion}"><\/script>`);
+  document.write(`<script src="./app.js?v=${dashboardAssetVersion}"><\/script>`);
+</script>
   </body>
 </html>
