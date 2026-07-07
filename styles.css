@@ -191,7 +191,7 @@ h2 {
 .summary-grid {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -677,10 +677,6 @@ select {
   .side-stack {
     grid-column: 1;
     grid-row: auto;
-  }
-
-  .summary-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .lpx-summary-grid {
