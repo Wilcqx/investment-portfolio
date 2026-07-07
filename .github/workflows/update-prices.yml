@@ -2,7 +2,7 @@ name: Daily Portfolio Price Refresh
 
 on:
   schedule:
-    # Every hour (UTC)
+    # Every 2 hours (UTC)
     - cron: "0 */2 * * *"
 
   workflow_dispatch:
@@ -38,6 +38,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No price changes to commit."
           else
-           git commit -m "Portfolio price refresh"
+            git commit -m "Portfolio price refresh"
             git push
           fi
