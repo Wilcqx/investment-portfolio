@@ -38,6 +38,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No price changes to commit."
           else
-            git commit -m "Hourly portfolio price refresh"
+           git commit -m "Portfolio price refresh"
             git push
           fi
