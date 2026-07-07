@@ -215,6 +215,16 @@ def main() -> None:
         price, status = validated_price(symbol, float(old_price) if old_price else None)
         if price:
             holding["price"] = round(price, 6)
+
+        # LPX is displayed in USD in the dashboard. Keep local USD fields
+        # in sync for easier inspection and future reporting, while the
+        # frontend can still calculate from quantity * price if needed.
+        qty = float(holding.get("quantity") or 0)
+        avg = float(holding.get("avgCost") or 0)
+        latest = float(holding.get("price") or 0)
+        holding["costUsd"] = round(qty * avg, 2)
+        holding["valueUsd"] = round(qty * latest, 2)
+        holding["pnlUsd"] = round(holding["valueUsd"] - holding["costUsd"], 2)
         holding["lastQuoteStatus"] = status
         holding["lastQuoteSource"] = REFERENCE_SOURCES.get(symbol, "Yahoo Finance primary; manual reference if needed")
 
