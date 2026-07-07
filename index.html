@@ -13,7 +13,7 @@
   <meta name="theme-color" content="#0047FF" />
 
   <script>
-    document.write('<link rel="stylesheet" href="./styles.css?v=' + new Date().toISOString().slice(0, 13) + '" />');
+    document.write('<link rel="stylesheet" href="./styles.css?v=' + Date.now() + '" />');
   </script>
 </head>
   <body>
@@ -298,7 +298,7 @@
     </dialog>
 
     <script>
-  const dashboardAssetVersion = new Date().toISOString().slice(0, 13);
+  const dashboardAssetVersion = Date.now();
   document.write(`<script src="./data.js?v=${dashboardAssetVersion}"><\/script>`);
   document.write(`<script src="./app.js?v=${dashboardAssetVersion}"><\/script>`);
 </script>
