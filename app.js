@@ -105,7 +105,6 @@ const els = {
   totalPnl: document.querySelector("#totalPnl"),
   dailyMove: document.querySelector("#dailyMove"),
   buildProgress: document.querySelector("#buildProgress"),
-  monthlyRsp: document.querySelector("#monthlyRsp"),
   progressFill: document.querySelector("#progressFill"),
   progressText: document.querySelector("#progressText"),
   fireMeta: document.querySelector("#fireMeta"),
@@ -275,7 +274,6 @@ function render() {
   const totals = getTotals();
   const fireValue = getFireValue();
   const progress = fireValue / state.fireTargetSgd;
-  const monthlyRsp = state.rsp.reduce((sum, item) => sum + item.amountSgd, 0);
   const returnRate = totals.cost ? (totals.pnl / totals.cost) * 100 : 0;
   const cashflow = getCashflowDraft();
 
@@ -287,7 +285,6 @@ function render() {
   els.dailyMove.textContent = money(dailyMove);
   els.dailyMove.className = dailyMove >= 0 ? "positive" : "negative";
   els.buildProgress.textContent = `${(progress * 100).toFixed(2)}%`;
-  els.monthlyRsp.textContent = money(monthlyRsp);
   updateSummaryRealValues();
   applySummaryPrivacy();
   els.progressFill.style.width = `${Math.min(progress * 100, 100)}%`;

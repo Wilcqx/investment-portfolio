@@ -190,6 +190,61 @@ def update_rsp(item: Dict[str, Any], fx: float) -> None:
     item["lastQuoteSource"] = REFERENCE_SOURCES.get(symbol, "Yahoo Finance primary")
 
 
+def apply_monthly_rsp(state: Dict[str, Any], now: datetime, fx: float) -> list[str]:
+    """Apply this month's RSP contribution once it's due, using the day's refreshed price/NAV.
+
+    Allianz G&I: SGD 1,000/month, due from the 8th. IVV: SGD 1,500/month, due from
+    the 22nd. Each item is only topped up once per calendar month, tracked via
+    lastRspAppliedMonth, so re-running the refresh later the same month is a no-op.
+    """
+    month_key = now.strftime("%Y-%m")
+    messages: list[str] = []
+
+    allianz = next((r for r in state.get("rsp", []) or [] if r.get("ticker") == "Allianz G&I"), None)
+    if allianz and now.day >= 8 and allianz.get("lastRspAppliedMonth") != month_key:
+        price = float(allianz.get("currentPrice") or 0)
+        if price > 0:
+            amount = float(allianz.get("amountSgd") or 1000)
+            old_qty = float(allianz.get("quantity") or 0)
+            old_avg = float(allianz.get("avgCost") or price)
+            units = amount / price
+            new_qty = old_qty + units
+            allianz["quantity"] = round(new_qty, 6)
+            allianz["avgCost"] = round(((old_qty * old_avg) + amount) / new_qty, 6)
+            allianz["currentValueSgd"] = round(new_qty * price, 2)
+            allianz["lastRspAppliedMonth"] = month_key
+            allianz["positionLog"] = "\n".join(filter(None, [
+                allianz.get("positionLog", ""),
+                f"{now.strftime('%Y-%m-%d')} RSP BUY {units:.4f} units @ S${price:.4f} (monthly S${amount:.0f})",
+            ]))
+            messages.append(f"Allianz RSP: added {units:.4f} units @ S${price:.4f} (S${amount:.0f} monthly contribution).")
+
+    ivv = next((h for h in state.get("holdings", []) or [] if h.get("ticker") == "IVV"), None)
+    if ivv and now.day >= 22 and ivv.get("lastRspAppliedMonth") != month_key:
+        price = float(ivv.get("price") or 0)
+        if price > 0:
+            amount_sgd = 1500.0
+            amount_usd = amount_sgd / fx if fx else amount_sgd
+            old_qty = float(ivv.get("quantity") or 0)
+            old_avg = float(ivv.get("avgCost") or price)
+            units = amount_usd / price
+            new_qty = old_qty + units
+            new_avg = ((old_qty * old_avg) + amount_usd) / new_qty
+            ivv["quantity"] = round(new_qty, 6)
+            ivv["avgCost"] = round(new_avg, 6)
+            ivv["costSgd"] = round(new_qty * new_avg * fx, 2)
+            ivv["valueSgd"] = round(new_qty * price * fx, 2)
+            ivv["pnlSgd"] = round(ivv["valueSgd"] - ivv["costSgd"], 2)
+            ivv["lastRspAppliedMonth"] = month_key
+            ivv["positionLog"] = "\n".join(filter(None, [
+                ivv.get("positionLog", ""),
+                f"{now.strftime('%Y-%m-%d')} RSP BUY {units:.4f} @ US${price:.2f} (monthly S${amount_sgd:.0f})",
+            ]))
+            messages.append(f"IVV RSP: added {units:.4f} units @ US${price:.2f} (S${amount_sgd:.0f} monthly contribution).")
+
+    return messages
+
+
 def main() -> None:
     state = load_state()
 
@@ -208,6 +263,13 @@ def main() -> None:
 
     for item in state.get("rsp", []):
         update_rsp(item, fx)
+
+    now = datetime.now(SGT)
+    rsp_messages = apply_monthly_rsp(state, now, fx)
+    if rsp_messages:
+        state.setdefault("history", [])
+        state["history"].append({"date": now.strftime("%Y-%m-%d"), "text": " ".join(rsp_messages)})
+        state["history"] = state["history"][-80:]
 
     for holding in state.get("lpx", {}).get("holdings", []):
         symbol = str(holding.get("quoteSymbol") or holding.get("ticker") or "").split(" /")[0].strip()
@@ -228,7 +290,6 @@ def main() -> None:
         holding["lastQuoteStatus"] = status
         holding["lastQuoteSource"] = REFERENCE_SOURCES.get(symbol, "Yahoo Finance primary; manual reference if needed")
 
-    now = datetime.now(SGT)
     state["asOf"] = now.strftime("%Y-%m-%d")
     state["version"] = "Portfolio Dashboard V1.1 Final Auto Refresh"
     state["quoteEvidence"] = [{
