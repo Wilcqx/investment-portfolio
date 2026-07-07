@@ -96,6 +96,61 @@ def fx_usd_sgd(state: Dict[str, Any]) -> float:
     return float(price or old_fx)
 
 
+def value_sgd_from_holding(holding: Dict[str, Any], fx: Optional[float] = None) -> float:
+    """Return the holding value in SGD using saved value first, then qty * price."""
+    saved_value = holding.get("valueSgd")
+    if saved_value is not None:
+        try:
+            return float(saved_value)
+        except Exception:
+            pass
+
+    qty = float(holding.get("quantity") or 0)
+    price = float(holding.get("price") or 0)
+    currency = holding.get("currency", "SGD")
+    rate = float(fx if fx is not None else 1.0) if currency == "USD" else 1.0
+    return qty * price * rate
+
+
+def portfolio_total_value_sgd(state: Dict[str, Any]) -> float:
+    """Match the dashboard total-value logic before the next price refresh.
+
+    This baseline is used for Daily Move. It includes normal holdings and
+    standalone RSP positions such as Allianz, while avoiding double-counting
+    tickers that already exist in holdings, such as IVV.
+    """
+    fx = float(state.get("fx", {}).get("USD") or 1.0)
+    holdings = state.get("holdings", []) or []
+    total = sum(value_sgd_from_holding(holding, fx) for holding in holdings)
+
+    existing_tickers = {str(holding.get("ticker") or "") for holding in holdings}
+    for item in state.get("rsp", []) or []:
+        ticker = str(item.get("ticker") or item.get("name") or "")
+        if ticker in existing_tickers:
+            continue
+        current_value = item.get("currentValueSgd")
+        if current_value is None:
+            continue
+        try:
+            total += float(current_value)
+        except Exception:
+            pass
+
+    total += float(state.get("summaryAdjustment", {}).get("value") or 0)
+    return round(total, 2)
+
+
+def lpx_total_value_usd(state: Dict[str, Any]) -> float:
+    """Return the LPX account market value in USD before the next refresh."""
+    holdings = state.get("lpx", {}).get("holdings", []) or []
+    total = 0.0
+    for holding in holdings:
+        qty = float(holding.get("quantity") or 0)
+        price = float(holding.get("price") or 0)
+        total += qty * price
+    return round(total, 2)
+
+
 def update_holding(holding: Dict[str, Any], fx: float) -> None:
     symbol = str(holding.get("quoteSymbol") or holding.get("ticker") or "").split(" /")[0].strip()
     old_price = holding.get("price")
@@ -137,6 +192,13 @@ def update_rsp(item: Dict[str, Any], fx: float) -> None:
 
 def main() -> None:
     state = load_state()
+
+    # Capture the portfolio value before refreshing prices so the dashboard
+    # Daily Move reflects the change since the previous refresh, not a stale
+    # fixed baseline from the original setup.
+    state["previousTotalValueSgd"] = portfolio_total_value_sgd(state)
+    state.setdefault("lpx", {})["previousTotalValueUsd"] = lpx_total_value_usd(state)
+
     fx = fx_usd_sgd(state)
     state.setdefault("fx", {})["USD"] = round(fx, 6)
     state.setdefault("fx", {})["SGD"] = 1
