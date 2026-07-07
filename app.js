@@ -140,7 +140,6 @@ const els = {
 
 let showAllHistory = false;
 
-document.querySelector("#addHoldingBtn").addEventListener("click", () => openHoldingDialog());
 document.querySelector("#privacyToggleBtn").addEventListener("click", toggleSummaryPrivacy);
 document.querySelector("#closeDialogBtn").addEventListener("click", () => els.dialog.close());
 document.querySelector("#cancelDialogBtn").addEventListener("click", () => els.dialog.close());
