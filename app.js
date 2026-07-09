@@ -1110,7 +1110,7 @@ function applyLpxTrade({ action, ticker, qty, price, fuzzyMatch }) {
       ticker,
       name: tickerName(ticker),
       quoteSymbol: ticker,
-      category: "HOLDING",
+      category: "Uncategorized",
       market: ticker.includes(".SI") ? "SG" : "US",
       currency: ticker.includes(".SI") ? "SGD" : "USD",
       quantity: 0,
