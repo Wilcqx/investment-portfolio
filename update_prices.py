@@ -217,6 +217,8 @@ def apply_monthly_rsp(state: Dict[str, Any], now: datetime, fx: float) -> list[s
                 allianz.get("positionLog", ""),
                 f"{now.strftime('%Y-%m-%d')} RSP BUY {units:.4f} units @ S${price:.4f} (monthly S${amount:.0f})",
             ]))
+            if allianz.get("account") == "SRS":
+                state["srsCashSgd"] = round(float(state.get("srsCashSgd") or 0) - amount, 2)
             messages.append(f"Allianz RSP: added {units:.4f} units @ S${price:.4f} (S${amount:.0f} monthly contribution).")
 
     ivv = next((h for h in state.get("holdings", []) or [] if h.get("ticker") == "IVV"), None)

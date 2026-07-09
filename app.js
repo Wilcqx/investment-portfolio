@@ -962,7 +962,7 @@ function escapeRegex(value) {
 }
 
 function parseTradeLine(line, account) {
-  const priceMatch = line.match(/@\s*([0-9]+(?:\.[0-9]+)?)/);
+  const priceMatch = line.match(/@\s*(?:USD|SGD|US\$|S\$|\$)?\s*([0-9]+(?:\.[0-9]+)?)/i);
   if (!priceMatch) return null;
   const price = Number(priceMatch[1]);
 
@@ -1085,6 +1085,11 @@ function applyRspTrade(item, { action, ticker, qty, price, fuzzyMatch }) {
   const currentPrice = Number(item.currentPrice) || price;
   item.currentValueSgd = round2(newQty * currentPrice);
   item.positionLog = [item.positionLog, `${todayKey()} ${action} ${qty} @ S$${price}`].filter(Boolean).join("\n");
+
+  if (item.account === "SRS") {
+    const cashDelta = qty * price;
+    state.srsCashSgd = round2((Number(state.srsCashSgd) || 0) + (action === "BUY" ? -cashDelta : cashDelta));
+  }
 
   const fuzzyNote = fuzzyMatch ? ` (模糊匹配: ${fuzzyMatch.ticker})` : "";
   return { ok: true, text: `Main ${action} ${ticker} ${qty} @ ${price} (定投持仓).${fuzzyNote}` };
