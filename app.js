@@ -430,7 +430,8 @@ function renderLpxHoldings() {
   const totalValue = rows.reduce((sum, holding) => sum + holdingValueLocal(holding), 0);
   const totalPnl = totalValue - totalCost;
   const dailyMove = totalValue - (Number(state.lpx?.previousTotalValueUsd) || totalValue);
-  const cashBalance = initialCash - totalCost;
+  const cashFundedCost = rows.filter((holding) => !holding.fundedExternally).reduce((sum, holding) => sum + holdingCostLocal(holding), 0);
+  const cashBalance = initialCash - cashFundedCost;
 
   els.lpxTotalValue.textContent = localMoney(totalValue, "USD");
   els.lpxTotalCost.textContent = localMoney(totalCost, "USD");

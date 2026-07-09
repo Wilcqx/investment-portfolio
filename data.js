@@ -511,6 +511,7 @@ window.PORTFOLIO_STATE = {
       {
         "id": "lpx-BABA",
         "virtual": false,
+        "fundedExternally": true,
         "ticker": "BABA",
         "name": "BABA",
         "quoteSymbol": "BABA",
@@ -521,7 +522,7 @@ window.PORTFOLIO_STATE = {
         "avgCost": 54.7,
         "price": 109.809502,
         "completion": 0,
-        "notes": "LPX holding account",
+        "notes": "LPX holding account, not funded from tracked cash pool",
         "positionLog": "2026-07-09 BUY 200 @ US$54.7",
         "costUsd": 10940.0,
         "valueUsd": 21961.9,
