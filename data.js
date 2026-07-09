@@ -1,11 +1,11 @@
 window.PORTFOLIO_STATE = {
-  "version": "Portfolio Dashboard V1.1 Final Auto Refresh",
+  "version": "Portfolio Dashboard V1.1 Note Update",
   "schemaVersion": 101,
   "asOf": "2026-07-09",
   "previousTotalValueSgd": 101995.09,
   "fireTargetSgd": 300000,
   "actualCashSgd": 300000,
-  "srsCashSgd": 11237,
+  "srsCashSgd": 10237,
   "fireCashflowTargetMonthly": 6000,
   "stage": "Build-up phase",
   "fx": {
@@ -169,9 +169,9 @@ window.PORTFOLIO_STATE = {
       "quantity": 300,
       "avgCost": 49.82,
       "price": 70.230003,
-      "costSgd": 14946.0,
-      "valueSgd": 21069.0,
-      "pnlSgd": 6123.0,
+      "costSgd": 14946,
+      "valueSgd": 21069,
+      "pnlSgd": 6123,
       "completion": 17.58,
       "notes": "Cash-flow core",
       "positionLog": "",
@@ -189,9 +189,9 @@ window.PORTFOLIO_STATE = {
       "quantity": 3000,
       "avgCost": 2.18,
       "price": 2.42,
-      "costSgd": 6540.0,
-      "valueSgd": 7260.0,
-      "pnlSgd": 720.0,
+      "costSgd": 6540,
+      "valueSgd": 7260,
+      "pnlSgd": 720,
       "completion": 44,
       "notes": "Singapore REIT sleeve",
       "positionLog": "",
@@ -209,9 +209,9 @@ window.PORTFOLIO_STATE = {
       "quantity": 1500,
       "avgCost": 3.41,
       "price": 3.41,
-      "costSgd": 5115.0,
-      "valueSgd": 5115.0,
-      "pnlSgd": 0.0,
+      "costSgd": 5115,
+      "valueSgd": 5115,
+      "pnlSgd": 0,
       "completion": 34,
       "notes": "Shipbuilding cycle",
       "positionLog": "",
@@ -229,9 +229,9 @@ window.PORTFOLIO_STATE = {
       "quantity": 6000,
       "avgCost": 0.609,
       "price": 0.565,
-      "costSgd": 3654.0,
-      "valueSgd": 3390.0,
-      "pnlSgd": -264.0,
+      "costSgd": 3654,
+      "valueSgd": 3390,
+      "pnlSgd": -264,
       "completion": 18,
       "notes": "Yahoo 8YZ.SI and TradingView SGX:8YZ validated",
       "positionLog": "",
@@ -441,7 +441,7 @@ window.PORTFOLIO_STATE = {
         "quoteUrl": "https://sg.finance.yahoo.com/quote/GOOGL",
         "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
         "lastQuoteSource": "Yahoo Finance primary; manual reference if needed",
-        "costUsd": 1750.0,
+        "costUsd": 1750,
         "valueUsd": 1809.6,
         "pnlUsd": 59.6
       },
@@ -483,7 +483,7 @@ window.PORTFOLIO_STATE = {
         "quoteUrl": "https://sg.finance.yahoo.com/quote/MSFT",
         "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
         "lastQuoteSource": "Yahoo Finance primary; manual reference if needed",
-        "costUsd": 1975.0,
+        "costUsd": 1975,
         "valueUsd": 1916.7,
         "pnlUsd": -58.3
       },
@@ -506,7 +506,23 @@ window.PORTFOLIO_STATE = {
         "lastQuoteSource": "Yahoo Finance primary; manual reference if needed",
         "costUsd": 1473.12,
         "valueUsd": 1498.12,
-        "pnlUsd": 25.0
+        "pnlUsd": 25
+      },
+      {
+        "id": "lpx-BABA",
+        "virtual": false,
+        "ticker": "BABA",
+        "name": "BABA",
+        "quoteSymbol": "BABA",
+        "category": "HOLDING",
+        "market": "US",
+        "currency": "USD",
+        "quantity": 200,
+        "avgCost": 54.7,
+        "price": 54.7,
+        "completion": 0,
+        "notes": "LPX holding account",
+        "positionLog": "2026-07-09 BUY 200 @ US$54.7"
       }
     ]
   },
@@ -674,6 +690,14 @@ window.PORTFOLIO_STATE = {
     {
       "date": "2026-07-08",
       "text": "Allianz RSP: added 127.5185 units @ S$7.8420 (S$1000 monthly contribution)."
+    },
+    {
+      "date": "2026-07-09",
+      "text": "Manual correction: deducted SGD 1,000 from SRS cash balance for the July Allianz RSP top-up that was auto-applied on 2026-07-08, before the SRS-deduction logic existed."
+    },
+    {
+      "date": "2026-07-09",
+      "text": "LPX BUY BABA 200 @ 54.7. (新建持仓)"
     }
   ],
   "updates": [
