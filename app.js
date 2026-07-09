@@ -332,16 +332,16 @@ function getFireValue() {
 }
 
 function actualCashBalance() {
-  return Number(state.actualCashSgd || defaultState.actualCashSgd) - nonSrsHoldingsValue();
+  return Number(state.actualCashSgd || defaultState.actualCashSgd) - nonSrsHoldingsCost();
 }
 
-function nonSrsHoldingsValue(totalValue = getTotals().value) {
-  return totalValue - allianzValueSgd();
+function nonSrsHoldingsCost(totalCost = getTotals().cost) {
+  return totalCost - allianzCostSgd();
 }
 
-function allianzValueSgd() {
+function allianzCostSgd() {
   const allianz = standaloneRspHoldings().find((holding) => holding.ticker === "Allianz G&I");
-  return allianz ? holdingValueSgd(allianz) : 0;
+  return allianz ? Number(allianz.costSgd) || 0 : 0;
 }
 
 function srsCashBalance() {
