@@ -153,7 +153,8 @@ def lpx_total_value_usd(state: Dict[str, Any]) -> float:
 
 def update_holding(holding: Dict[str, Any], fx: float) -> None:
     symbol = str(holding.get("quoteSymbol") or holding.get("ticker") or "").split(" /")[0].strip()
-    old_price = holding.get("price")
+    is_new = "lastQuoteStatus" not in holding
+    old_price = None if is_new else holding.get("price")
     price, status = validated_price(symbol, float(old_price) if old_price else None)
     if price is None:
         holding["lastQuoteStatus"] = status
@@ -275,7 +276,8 @@ def main() -> None:
 
     for holding in state.get("lpx", {}).get("holdings", []):
         symbol = str(holding.get("quoteSymbol") or holding.get("ticker") or "").split(" /")[0].strip()
-        old_price = holding.get("price")
+        is_new = "lastQuoteStatus" not in holding
+        old_price = None if is_new else holding.get("price")
         price, status = validated_price(symbol, float(old_price) if old_price else None)
         if price:
             holding["price"] = round(price, 6)
