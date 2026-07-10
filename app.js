@@ -944,7 +944,7 @@ function bestFuzzyAssetMatch(line) {
         const distance = levenshtein(candidate, alias);
         const threshold = alias.length > 6 ? 2 : 1;
         if (distance <= threshold && (!best || distance < best.distance)) {
-          best = { ticker, distance };
+          best = { ticker, distance, matchedText: candidate };
         }
       });
     });
@@ -968,32 +968,39 @@ function parseTradeLine(line, account) {
   const price = Number(priceMatch[1]);
 
   let ticker = "";
+  let anchorText = "";
   let fuzzyMatch = null;
 
   const fuzzy = bestFuzzyAssetMatch(line);
   if (fuzzy) {
     ticker = fuzzy.ticker;
+    anchorText = fuzzy.matchedText;
     if (fuzzy.distance > 0) fuzzyMatch = fuzzy;
   }
 
   if (!ticker) {
     const knownTickers = ["MSFT", "NVDA", "IVV", "GOOGL", "GOOG", "PLTR", "MCD", "DBS", "CICT", "BTC", "ETH"];
     const upperLine = line.toUpperCase();
-    let known = knownTickers.find((item) => upperLine.includes(item));
-    if (known === "GOOG") known = "GOOGL";
-    if (known) ticker = known;
+    const known = knownTickers.find((item) => upperLine.includes(item));
+    if (known) {
+      anchorText = known;
+      ticker = known === "GOOG" ? "GOOGL" : known;
+    }
   }
 
-  if (!ticker) ticker = extractUnknownTicker(line);
+  if (!ticker) {
+    ticker = extractUnknownTicker(line);
+    anchorText = ticker;
+  }
   if (!ticker) return null;
 
   let qty = null;
   const qtyBeforeShare = line.match(/([0-9]+(?:\.[0-9]+)?)\s*(?:shares?|share|股)/i);
   if (qtyBeforeShare) qty = Number(qtyBeforeShare[1]);
-  if (qty === null) {
+  if (qty === null && anchorText) {
     const upperLine = line.toUpperCase();
-    const anchor = escapeRegex(ticker.split(" ")[0]);
-    const afterTicker = upperLine.match(new RegExp(`${anchor}[^0-9]*([0-9]+(?:\\.[0-9]+)?)`));
+    const anchor = escapeRegex(anchorText);
+    const afterTicker = upperLine.match(new RegExp(`${anchor}[^0-9]*([0-9]+(?:\\.[0-9]+)?)`, "i"));
     if (afterTicker) qty = Number(afterTicker[1]);
   }
   if (!qty || qty <= 0) return null;
