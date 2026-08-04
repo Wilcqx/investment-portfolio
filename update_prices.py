@@ -61,6 +61,20 @@ def quote_price(symbol: str) -> Optional[float]:
                     return float(value)
             except Exception:
                 pass
+
+        # fast_info can silently return nothing (seen on live tickers); .info carries
+        # the same live/regular-market price and is a more reliable fallback than
+        # dropping straight to yesterday's daily close, which misses today's move
+        # entirely while the current session is still in progress.
+        try:
+            info = ticker.info or {}
+            for key in ("regularMarketPrice", "currentPrice", "previousClose"):
+                value = info.get(key)
+                if value and float(value) > 0:
+                    return float(value)
+        except Exception:
+            pass
+
         hist = ticker.history(period="5d", interval="1d", auto_adjust=False)
         if hist is not None and not hist.empty:
             close = hist["Close"].dropna()
