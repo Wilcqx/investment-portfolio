@@ -2,7 +2,7 @@ window.PORTFOLIO_STATE = {
   "version": "Portfolio Dashboard V1.1 Final Auto Refresh",
   "schemaVersion": 101,
   "asOf": "2026-08-15",
-  "previousTotalValueSgd": 111681.23,
+  "previousTotalValueSgd": 111686.84,
   "fireTargetSgd": 300000,
   "actualCashSgd": 300000,
   "srsCashSgd": 9237.0,
@@ -26,8 +26,8 @@ window.PORTFOLIO_STATE = {
       "amountSgd": 1000,
       "quantity": 1896.463551,
       "avgCost": 6.891376,
-      "currentPrice": 7.8369,
-      "currentValueSgd": 14862.4,
+      "currentPrice": 7.8427,
+      "currentValueSgd": 14873.39,
       "countedInFire": true,
       "account": "SRS",
       "status": "Locked",
@@ -152,7 +152,7 @@ window.PORTFOLIO_STATE = {
     {
       "ticker": "AUTO PRICE REFRESH",
       "source": "Yahoo Finance via yfinance; TradingView/FSMOne kept as manual reference sources",
-      "detail": "Updated by GitHub Actions at 2026-08-15 10:43 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
+      "detail": "Updated by GitHub Actions at 2026-08-15 12:20 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
     }
   ],
   "notesByDate": {},
@@ -390,10 +390,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.0405,
       "avgCost": 99288,
-      "price": 63050.72,
+      "price": 63057.48,
       "costSgd": 5142.67,
-      "valueSgd": 3265.74,
-      "pnlSgd": -1876.93,
+      "valueSgd": 3266.09,
+      "pnlSgd": -1876.58,
       "completion": 10,
       "notes": "Small non-correlated sleeve",
       "positionLog": "",
@@ -410,10 +410,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.2568,
       "avgCost": 3652,
-      "price": 1882.55,
+      "price": 1882.01,
       "costSgd": 1199.4,
-      "valueSgd": 618.27,
-      "pnlSgd": -581.13,
+      "valueSgd": 618.09,
+      "pnlSgd": -581.31,
       "completion": 8,
       "notes": "Small crypto satellite",
       "positionLog": "",
@@ -720,7 +720,6 @@ window.PORTFOLIO_STATE = {
     }
   ],
   "updates": [
-    "Price refresh completed at 2026-08-13 20:44 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-08-13 22:50 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-08-14 00:44 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-08-14 02:48 SGT with Yahoo primary and sanity validation.",
@@ -739,6 +738,7 @@ window.PORTFOLIO_STATE = {
     "Price refresh completed at 2026-08-15 04:21 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-08-15 06:12 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-08-15 08:37 SGT with Yahoo primary and sanity validation.",
-    "Price refresh completed at 2026-08-15 10:43 SGT with Yahoo primary and sanity validation."
+    "Price refresh completed at 2026-08-15 10:43 SGT with Yahoo primary and sanity validation.",
+    "Price refresh completed at 2026-08-15 12:20 SGT with Yahoo primary and sanity validation."
   ]
 };
