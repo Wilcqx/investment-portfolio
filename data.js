@@ -2,7 +2,7 @@ window.PORTFOLIO_STATE = {
   "version": "Portfolio Dashboard V1.1 Final Auto Refresh",
   "schemaVersion": 101,
   "asOf": "2026-09-05",
-  "previousTotalValueSgd": 114005.52,
+  "previousTotalValueSgd": 113983.12,
   "fireTargetSgd": 300000,
   "actualCashSgd": 300000,
   "srsCashSgd": 9237.0,
@@ -152,7 +152,7 @@ window.PORTFOLIO_STATE = {
     {
       "ticker": "AUTO PRICE REFRESH",
       "source": "Yahoo Finance via yfinance; TradingView/FSMOne kept as manual reference sources",
-      "detail": "Updated by GitHub Actions at 2026-09-05 07:33 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
+      "detail": "Updated by GitHub Actions at 2026-09-05 09:57 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
     }
   ],
   "notesByDate": {},
@@ -390,10 +390,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.0405,
       "avgCost": 99288,
-      "price": 79694.56,
+      "price": 79584.1,
       "costSgd": 5093.21,
-      "valueSgd": 4088.12,
-      "pnlSgd": -1005.09,
+      "valueSgd": 4082.45,
+      "pnlSgd": -1010.76,
       "completion": 10,
       "notes": "Small non-correlated sleeve",
       "positionLog": "",
@@ -410,10 +410,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.2568,
       "avgCost": 3652,
-      "price": 2453.01,
+      "price": 2452.84,
       "costSgd": 1187.86,
-      "valueSgd": 797.87,
-      "pnlSgd": -389.99,
+      "valueSgd": 797.82,
+      "pnlSgd": -390.04,
       "completion": 8,
       "notes": "Small crypto satellite",
       "positionLog": "",
@@ -423,7 +423,7 @@ window.PORTFOLIO_STATE = {
   ],
   "lpx": {
     "initialCashUsd": 9983,
-    "previousTotalValueUsd": 31983.1,
+    "previousTotalValueUsd": 31986.85,
     "holdings": [
       {
         "id": "lpx-GOOGL",
@@ -724,7 +724,6 @@ window.PORTFOLIO_STATE = {
     }
   ],
   "updates": [
-    "Price refresh completed at 2026-09-02 02:59 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-09-02 06:10 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-09-02 09:56 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-09-02 14:41 SGT with Yahoo primary and sanity validation.",
@@ -743,6 +742,7 @@ window.PORTFOLIO_STATE = {
     "Price refresh completed at 2026-09-04 20:21 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-09-05 01:15 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-09-05 04:01 SGT with Yahoo primary and sanity validation.",
-    "Price refresh completed at 2026-09-05 07:33 SGT with Yahoo primary and sanity validation."
+    "Price refresh completed at 2026-09-05 07:33 SGT with Yahoo primary and sanity validation.",
+    "Price refresh completed at 2026-09-05 09:57 SGT with Yahoo primary and sanity validation."
   ]
 };
