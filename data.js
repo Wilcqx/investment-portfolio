@@ -1,11 +1,11 @@
 window.PORTFOLIO_STATE = {
   "version": "Portfolio Dashboard V1.1 Final Auto Refresh",
   "schemaVersion": 101,
-  "asOf": "2026-11-07",
-  "previousTotalValueSgd": 112916.55,
+  "asOf": "2026-11-08",
+  "previousTotalValueSgd": 112909.88,
   "fireTargetSgd": 300000,
   "actualCashSgd": 300000,
-  "srsCashSgd": 7237.0,
+  "srsCashSgd": 6237.0,
   "fireCashflowTargetMonthly": 6000,
   "stage": "Build-up phase",
   "fx": {
@@ -24,17 +24,17 @@ window.PORTFOLIO_STATE = {
       "quoteSymbol": "0P0000Z32L.SI",
       "isin": "LU0943347566",
       "amountSgd": 1000,
-      "quantity": 2159.440756,
-      "avgCost": 6.978309,
+      "quantity": 2298.536356,
+      "avgCost": 6.991077,
       "currentPrice": 7.1893,
-      "currentValueSgd": 15524.87,
+      "currentValueSgd": 16524.87,
       "countedInFire": true,
       "account": "SRS",
       "status": "Locked",
       "lastQuoteStatus": "updated: Yahoo Finance primary; sanity-checked against previous saved price",
       "lastQuoteSource": "Yahoo Finance primary; FSMOne fund page as manual reference",
-      "lastRspAppliedMonth": "2026-10",
-      "positionLog": "2026-07-08 RSP BUY 127.5185 units @ S$7.8420 (monthly S$1000)\n2026-08-08 RSP BUY 128.5711 units @ S$7.7778 (monthly S$1000)\n2026-09-08 RSP BUY 130.7685 units @ S$7.6471 (monthly S$1000)\n2026-10-08 RSP BUY 132.2087 units @ S$7.5638 (monthly S$1000)"
+      "lastRspAppliedMonth": "2026-11",
+      "positionLog": "2026-07-08 RSP BUY 127.5185 units @ S$7.8420 (monthly S$1000)\n2026-08-08 RSP BUY 128.5711 units @ S$7.7778 (monthly S$1000)\n2026-09-08 RSP BUY 130.7685 units @ S$7.6471 (monthly S$1000)\n2026-10-08 RSP BUY 132.2087 units @ S$7.5638 (monthly S$1000)\n2026-11-08 RSP BUY 139.0956 units @ S$7.1893 (monthly S$1000)"
     },
     {
       "name": "IVV",
@@ -152,7 +152,7 @@ window.PORTFOLIO_STATE = {
     {
       "ticker": "AUTO PRICE REFRESH",
       "source": "Yahoo Finance via yfinance; TradingView/FSMOne kept as manual reference sources",
-      "detail": "Updated by GitHub Actions at 2026-11-07 22:41 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
+      "detail": "Updated by GitHub Actions at 2026-11-08 03:43 SGT. Quotes are sanity-checked against the previous saved price; abnormal or unavailable quotes keep the previous price."
     }
   ],
   "notesByDate": {},
@@ -390,10 +390,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.0405,
       "avgCost": 99288,
-      "price": 75870.36,
+      "price": 75646.04,
       "costSgd": 5157.14,
-      "valueSgd": 3940.8,
-      "pnlSgd": -1216.34,
+      "valueSgd": 3929.15,
+      "pnlSgd": -1227.99,
       "completion": 10,
       "notes": "Small non-correlated sleeve",
       "positionLog": "",
@@ -410,10 +410,10 @@ window.PORTFOLIO_STATE = {
       "currency": "USD",
       "quantity": 0.2568,
       "avgCost": 3652,
-      "price": 2243.75,
+      "price": 2230.26,
       "costSgd": 1202.77,
-      "valueSgd": 738.97,
-      "pnlSgd": -463.8,
+      "valueSgd": 734.53,
+      "pnlSgd": -468.24,
       "completion": 8,
       "notes": "Small crypto satellite",
       "positionLog": "",
@@ -737,10 +737,13 @@ window.PORTFOLIO_STATE = {
     {
       "date": "2026-10-22",
       "text": "IVV RSP: added 1.5121 units @ US$776.68 (S$1500 monthly contribution)."
+    },
+    {
+      "date": "2026-11-08",
+      "text": "Allianz RSP: added 139.0956 units @ S$7.1893 (S$1000 monthly contribution)."
     }
   ],
   "updates": [
-    "Price refresh completed at 2026-11-02 09:07 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-11-02 16:36 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-11-03 03:53 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-11-03 09:55 SGT with Yahoo primary and sanity validation.",
@@ -759,6 +762,7 @@ window.PORTFOLIO_STATE = {
     "Price refresh completed at 2026-11-07 04:09 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-11-07 09:26 SGT with Yahoo primary and sanity validation.",
     "Price refresh completed at 2026-11-07 15:58 SGT with Yahoo primary and sanity validation.",
-    "Price refresh completed at 2026-11-07 22:41 SGT with Yahoo primary and sanity validation."
+    "Price refresh completed at 2026-11-07 22:41 SGT with Yahoo primary and sanity validation.",
+    "Price refresh completed at 2026-11-08 03:43 SGT with Yahoo primary and sanity validation."
   ]
 };
